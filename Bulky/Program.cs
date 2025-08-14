@@ -1,3 +1,6 @@
+using Bulky.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace Bulky
 {
     public class Program
@@ -6,8 +9,12 @@ namespace Bulky
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<BulkyDbContext>(options =>options.UseSqlServer(defaultConnection));
 
             var app = builder.Build();
 
