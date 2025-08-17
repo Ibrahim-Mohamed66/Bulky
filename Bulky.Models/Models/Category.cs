@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Bulky.Models;
+namespace Bulky.Models.Models;
 public class Category:EntityBase
 {
 
