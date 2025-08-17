@@ -6,25 +6,25 @@
     <title>@ViewData["Title"] - Bulky</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Bulky.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/Bulky.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/Bulky.styles.css" asp-append-version="true" />   
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
             <div class="container-fluid">
-                <a class="navbar-brand text-uppercase mx-5" asp-area="" asp-controller="Home" asp-action="Index">Bulky</a>
+                <a class="navbar-brand text-uppercase ms-5" asp-area="" asp-controller="Home" asp-action="Index">Bulky</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav ms-auto d-none d-lg-flex">
+                    <ul class="navbar-nav me-auto d-none d-lg-flex">
                         <li class="nav-item">
                             <a class="nav-link p-2 p-lg-3 " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>

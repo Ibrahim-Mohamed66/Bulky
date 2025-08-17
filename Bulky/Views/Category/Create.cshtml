@@ -1,42 +1,55 @@
 ﻿@model Category
-<div class="create-category p-5 mt-5">
-    <div class="container">
 
-        <form asp-action="create" method="post">
-            <div class="row create-header mt-3 pb-2">
-                <h2 class="text-center"> Create Category </h2>
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Create Category</h2>
             </div>
-            <div class="mb-3">
-                <label asp-for="Name" class="form-label">Category Name</label>
-                <input asp-for="Name" class="form-control" placeholder="Enter Your Category Name" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="DisplayOrder" class="form-label"> Display Order</label>
-                <input asp-for="DisplayOrder" class="form-control" placeholder="Enter Your Display Order" />
-                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
-            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row">
+            <div class="border p-3">
 
-            <div class="form-switch mb-3">
-                <input type="checkbox" asp-for="IsHidden" class="form-check-input" />
-                <label asp-for="IsHidden" class="form-label">Hide Category</label>
-            </div>
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="Name" class="form-control border-0 shadow" />
+                    <label asp-for="Name" class="ms-2"></label>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="DisplayOrder" class="form-control border-0 shadow" />
+                    <label asp-for="DisplayOrder" class="ms-2"></label>
+                    <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                </div>
 
-            <div class="mb-3">
-                <div class="row">
-                    <div class="col-lg-6 col-sm-12 ">
-                        <button type="submit" class="btn btn-dark form-control mb-3">Create</button>
+                <div class="form-switch mb-3">
+                    <input type="checkbox" asp-for="IsHidden" class="form-check-input" />
+                    <label asp-for="IsHidden" class="form-label">Hide Category</label>
+                </div>
+
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary form-control">Create</button>
                     </div>
-
-                    <div class="col-lg-6 col-sm-12 back-list">
-                        <a class="btn btn-outline-secondary form-control" asp-action="Index">Back to List</a>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Category" asp-action="Index" class="btn btn-outline-primary border  form-control">
+                            Back to List
+                        </a>
                     </div>
                 </div>
-            </div>
 
+
+            </div>
         </form>
     </div>
 </div>
+
+
+
+
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
 }
