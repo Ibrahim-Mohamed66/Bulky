@@ -1,7 +1,10 @@
 using Bulky.DataAccess.Data;
+using Bulky.DataAccess.Repositories;
+using Bulky.DataAccess.Repositories.IRepositories;
+
 using Microsoft.EntityFrameworkCore;
 
-namespace Bulky
+namespace BulkyWeb
 {
     public class Program
     {
@@ -15,6 +18,8 @@ namespace Bulky
             builder.Services.AddControllersWithViews();
             var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<BulkyDbContext>(options =>options.UseSqlServer(defaultConnection));
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
             var app = builder.Build();
 
@@ -34,7 +39,7 @@ namespace Bulky
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
             app.Run();
