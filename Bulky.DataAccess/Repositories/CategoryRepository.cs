@@ -5,7 +5,7 @@ using Bulky.Models.Models;
 
 namespace Bulky.DataAccess.Repositories;
 
-public class CategoryRepository : Repository<Category>, ICategoryRepository
+public class CategoryRepository : Repository<Category, int>, ICategoryRepository
 {
     private readonly BulkyDbContext _context;
 

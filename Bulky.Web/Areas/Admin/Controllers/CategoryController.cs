@@ -18,7 +18,7 @@ public class CategoryController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var categories = await _unitOfWork.Category.GetAllAsync();
+        var categories = await _unitOfWork.Category.GetAllAsync(orderBy: q => q.OrderBy(c=> c.Id));
         return View(categories);
     }
 

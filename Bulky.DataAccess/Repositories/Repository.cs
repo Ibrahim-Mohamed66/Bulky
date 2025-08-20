@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Bulky.DataAccess.Repositories;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+public class Repository<TEntity, TId> : IRepository<TEntity, TId> where TEntity : class
 {
     private readonly BulkyDbContext _context;
     private readonly DbSet<TEntity> _dbSet;
@@ -21,17 +21,31 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         await _dbSet.AddAsync(entity);
     }
 
-    public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> filter)
+    public async Task<TEntity?> FilterAsync(
+    Expression<Func<TEntity, bool>> filter,
+    params Expression<Func<TEntity, object>>[] includes)
     {
-        var query = _dbSet.AsNoTracking().Where(filter);
+        IQueryable<TEntity> query = _dbSet.AsNoTracking();
+
+        // Apply includes
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        // Apply filter
+        query = query.Where(filter);
+
         return await query.FirstOrDefaultAsync();
     }
+
 
     public async Task<IEnumerable<TEntity>> GetAllAsync(
         int pageNumber = 1,
         int pageSize = 10,
         Expression<Func<TEntity, bool>>? filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+        params Expression<Func<TEntity, object>>[]? includes)
     {
         // Ensure pageNumber and pageSize are valid
         if (pageNumber < 1) pageNumber = 1;
@@ -42,22 +56,44 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
         if (filter != null)
             query = query.Where(filter);
+        if (includes != null && includes.Length > 0)
+        {
+            foreach (var include in includes)
+                query = query.Include(include);
+        }
 
         if (orderBy != null)
             query = orderBy(query);
 
-        return await query
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
+        return await query.Skip((pageNumber - 1) * pageSize)
+                          .Take(pageSize)
+                          .ToListAsync();
     }
 
-    public async Task<TEntity?> GetByIdAsync(int id)
+    public async Task<TEntity?> GetByIdAsync(TId id, params Expression<Func<TEntity, object>>[]? includes)
     {
-        return await _dbSet.FindAsync(id);
+        IQueryable<TEntity> query = _dbSet.AsNoTracking();
+        if (includes != null)
+        {
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+        }
+        return await query.FirstOrDefaultAsync(e => EF.Property<TId>(e, "Id")!.Equals(id));
     }
 
-    public async Task RemoveAsync(int id)
+    public async Task<int> GetCountAsync(Expression<Func<TEntity, bool>>? filter = null)
+    {
+        IQueryable<TEntity> query = _dbSet.AsNoTracking();
+        if (filter != null)
+        {
+            query = query.Where(filter);
+        }
+        return await query.CountAsync();
+    }
+
+    public async Task RemoveAsync(TId id)
     {
         var entity = await _dbSet.FindAsync(id);
         if (entity != null)
@@ -70,7 +106,4 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         _dbSet.RemoveRange(entities);
     }
-
-    
-
 }
