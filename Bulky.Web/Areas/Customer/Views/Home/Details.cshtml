@@ -1,0 +1,208 @@
+﻿@model Product
+@{
+    ViewData["Title"] = $"{Model.Title} - Bulky";
+}
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav py-3">
+    <div class="container">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+                <a asp-action="Index" class="text-decoration-none">
+                    <i class="bi bi-house"></i> Home
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+        </ol>
+    </div>
+</nav>
+
+<!-- Product Details Section -->
+<section class="product-details-section py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Product Image -->
+            <div class="col-lg-5 mb-4">
+                <div class="product-image-container">
+                    <div class="product-image-wrapper">
+                        <img src="@Model.ImageUrl" alt="@Model.Title" class="product-main-image" />
+                    </div>
+                    <div class="product-badges">
+                        <span class="badge bg-warning text-dark">@Model.Category.Name</span>
+                        <span class="badge bg-success">In Stock</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Information -->
+            <div class="col-lg-7">
+                <div class="product-info">
+                    <h1 class="product-title">@Model.Title</h1>
+                    <p class="product-author">by <strong>@Model.Author</strong></p>
+                    
+                    <div class="product-meta mb-4">
+                        <div class="meta-item">
+                            <i class="bi bi-upc-scan"></i>
+                            <span>ISBN: @Model.ISBN</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            <span>4.5 (128 reviews)</span>
+                        </div>
+                    </div>
+
+                    <div class="product-description mb-4">
+                        <h5>Description</h5>
+                        <p class="text-muted">@Html.Raw(Model.Description)</p>
+                    </div>
+
+                    <!-- Pricing Table -->
+                    <div class="pricing-section mb-4">
+                        <h5 class="mb-3">Bulk Pricing</h5>
+                        <div class="pricing-table">
+                            <div class="pricing-header">
+                                <div class="pricing-col">Quantity</div>
+                                <div class="pricing-col">Price</div>
+                                <div class="pricing-col">Savings</div>
+                            </div>
+                            <div class="pricing-row">
+                                <div class="pricing-col">1-50</div>
+                                <div class="pricing-col price-value">@Model.Price.ToString("c")</div>
+                                <div class="pricing-col savings">@(((Model.ListPrice - Model.Price) / Model.ListPrice * 100).ToString("F0"))%</div>
+                            </div>
+                            <div class="pricing-row">
+                                <div class="pricing-col">51-100</div>
+                                <div class="pricing-col price-value">@Model.Price50.ToString("c")</div>
+                                <div class="pricing-col savings">@(((Model.ListPrice - Model.Price50) / Model.ListPrice * 100).ToString("F0"))%</div>
+                            </div>
+                            <div class="pricing-row featured">
+                                <div class="pricing-col">100+</div>
+                                <div class="pricing-col price-value">@Model.Price100.ToString("c")</div>
+                                <div class="pricing-col savings">@(((Model.ListPrice - Model.Price100) / Model.ListPrice * 100).ToString("F0"))%</div>
+                            </div>
+                        </div>
+                        <div class="msrp-info mt-2">
+                            <small class="text-muted">Normal Price: <span class="text-decoration-line-through">@Model.ListPrice.ToString("c")</span></small>
+                        </div>
+                    </div>
+
+                    <!-- Purchase Section -->
+                    <div class="purchase-section">
+                        <form method="post">
+                            <div class="row align-items-end">
+                                <div class="col-md-4 mb-3">
+                                    <label for="quantity" class="form-label">Quantity</label>
+                                    <div class="input-group">
+                                        <button id="decreaseBtn" type="button" class="btn btn-secondary quantity-btn" onclick="decreaseQuantity()">
+                                            <i class="bi bi-dash"></i>
+                                        </button>
+                                        <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control text-center" />
+                                        <button id="increaseBtn" type="button" class="btn btn-secondary quantity-btn" onclick="increaseQuantity()">
+                                            <i class="bi bi-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <div class="total-price">
+                                        <span class="total-label">Total Price:</span>
+                                        <span class="total-amount" id="totalPrice">@Model.Price.ToString("c")</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            @*Disabled For Now (Coming Soon.....)*@
+                            <div class="action-buttons">
+                                <button disabled type="submit" class="btn btn-primary btn-lg add-to-cart-btn">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart
+                                </button>
+                                <button disabled type="button" class="btn btn-outline-primary btn-lg wishlist-btn">
+                                    <i class="bi bi-heart"></i> Add to Wishlist
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Additional Features -->
+                    <div class="product-features mt-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="bi bi-truck text-success"></i>
+                                    <span>Free shipping on orders over $50</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="bi bi-shield-check text-success"></i>
+                                    <span>Secure payment processing</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="bi bi-arrow-clockwise text-success"></i>
+                                    <span>30-day return policy</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="bi bi-headset text-success"></i>
+                                    <span>24/7 customer support</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+
+            const $quantityInput = $('#quantity');
+            const $totalPrice = $('#totalPrice');
+
+            function getUnitPrice(quantity) {
+                if (quantity > 100) return @Model.Price100;
+                if (quantity > 50) return @Model.Price50;
+                return @Model.Price;
+            }
+
+            function updateTotalPrice() {
+                let quantity = parseInt($quantityInput.val());
+                if (isNaN(quantity) || quantity < 1) {
+                    quantity = 1;
+                    $quantityInput.val(quantity);
+                }
+                const unitPrice = getUnitPrice(quantity);
+                const total = quantity * unitPrice;
+                $totalPrice.text('$' + total.toFixed(2));
+            }
+
+            $('#increaseBtn').on('click', function() {
+                let current = parseInt($quantityInput.val());
+                $quantityInput.val(current + 1);
+                updateTotalPrice();
+            });
+
+
+            $('#decreaseBtn').on('click', function() {
+                let current = parseInt($quantityInput.val());
+                if (current > 1) {
+                    $quantityInput.val(current - 1);
+                    updateTotalPrice();
+                }
+            });
+
+            $quantityInput.on('input', updateTotalPrice);
+
+            updateTotalPrice();
+        });
+    </script>
+
+}
+

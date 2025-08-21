@@ -1,8 +1,314 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Bulky - Your Premium Bookstore";
 }
 
-<div class="text-center mb-5">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-background">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="row align-items-center min-vh-75">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            Discover Your Next
+                            <span class="text-gradient">Great Read</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            Welcome to Bulky, your premier destination for books that inspire, educate, and entertain.
+                            From bestsellers to hidden gems, we have something for every reader.
+                        </p>
+
+                        <!-- Stats -->
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <span class="stat-number">10K+</span>
+                                <span class="stat-label">Books</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">50+</span>
+                                <span class="stat-label">Categories</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number">24/7</span>
+                                <span class="stat-label">Support</span>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="hero-buttons">
+                            <a href="#products" class="btn btn-primary btn-lg hero-btn">
+                                <i class="bi bi-book"></i> Browse Books
+                            </a>
+                            <a href="#categories" class="btn btn-outline-light btn-lg hero-btn">
+                                <i class="bi bi-grid"></i> View Categories
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Books Illustration -->
+                <div class="col-lg-6">
+                    <div class="hero-image-container">
+                        <div class="floating-books">
+                            <div class="book book-1"><i class="bi bi-book"></i></div>
+                            <div class="book book-2"><i class="bi bi-journal-text"></i></div>
+                            <div class="book book-3"><i class="bi bi-journal-richtext"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- end row -->
+        </div> <!-- end container -->
+    </div> <!-- end hero-background -->
+</section>
+
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="feature-card text-center">
+                    <div class="feature-icon">
+                        <i class="bi bi-truck"></i>
+                    </div>
+                    <h4>Free Shipping</h4>
+                    <p>Free delivery on orders over $50</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="feature-card text-center">
+                    <div class="feature-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h4>Secure Payment</h4>
+                    <p>100% secure payment processing</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="feature-card text-center">
+                    <div class="feature-icon">
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </div>
+                    <h4>Easy Returns</h4>
+                    <p>30-day return policy</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section id="products" class="products-section py-5">
+    <div class="container">
+       
+
+        <!-- Filter Chips -->
+        <div class="filter-chips mb-4">
+            <div class="filter-chip active" data-filter="all">All Books</div>
+            <div class="filter-chip" data-filter="fiction">Fiction</div>
+            <div class="filter-chip" data-filter="non-fiction">Non-Fiction</div>
+            <div class="filter-chip" data-filter="bestseller">Bestsellers</div>
+            <div class="filter-chip" data-filter="new">New Arrivals</div>
+            <div class="filter-chip" data-filter="sale">On Sale</div>
+        </div>
+
+        <!-- Section Header -->
+        <div class="section-header text-center mb-5">
+            <h2 class="section-title">Featured Books</h2>
+            <p class="section-subtitle">Discover our handpicked collection of amazing reads</p>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="row" id="productGrid">
+            @foreach (var product in Model)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-item fade-in">
+                    <div class="card product-card h-100 shadow-sm position-relative">
+                        <div class="position-relative overflow-hidden">
+                            <img src="@product.ImageUrl" class="card-img-top product-image" alt="@product.Title" />
+                            <div class="price-badge">
+                                @((((product.ListPrice - product.Price100) / product.ListPrice) * 100).ToString("F0"))% OFF
+                            </div>
+                        </div>
+
+                        <div class="card-body d-flex flex-column">
+                            <div class="product-category mb-2">
+                                <span class="badge bg-secondary">Book</span>
+                            </div>
+                            <h5 class="card-title product-title">@product.Title</h5>
+                            <p class="text-warning author-name mb-3">
+                                by <strong>@product.Author</strong>
+                            </p>
+
+                            <div class="product-stats">
+                                <div class="text-center">
+                                    <small class="text-muted d-block">Normal Price</small>
+                                    <span class="text-decoration-line-through text-muted">
+                                        @product.ListPrice.ToString("c")
+                                    </span>
+                                </div>
+                                <div class="text-center">
+                                    <small class="text-muted d-block">Your Price</small>
+                                    <span class="h6 text-success fw-bold">
+                                        @product.Price.ToString("c")
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mt-auto">
+                                <a asp-action="Details" asp-area="Customer" asp-route-id="@product.Id" class="btn btn-primary btn-details w-100 mb-2">
+                                    <i class="bi bi-eye"></i> View Details
+                                </a>
+                                <button class="btn btn-outline-success w-100 add-to-cart-btn">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Pagination Section -->
+        @if (ViewBag.TotalPages > 1)
+        {
+            <div class="pagination-section mt-5">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="pagination-info">
+                            <p class="mb-0 text-muted">
+                                Showing @Math.Min(ViewBag.CurrentPage * ViewBag.PageSize, ViewBag.TotalProducts)
+                                of @ViewBag.TotalProducts products
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <nav aria-label="Product pagination">
+                            <ul class="pagination justify-content-center justify-content-md-end mb-0">
+                                <!-- Previous Page -->
+                                @if (ViewBag.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-pageSize="@ViewBag.PageSize">
+                                            <i class="bi bi-chevron-left"></i> Previous
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">
+                                            <i class="bi bi-chevron-left"></i> Previous
+                                        </span>
+                                    </li>
+                                }
+
+                                <!-- Page Numbers -->
+                                @{
+                                    int startPage = Math.Max(1, ViewBag.CurrentPage - 2);
+                                    int endPage = Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 2);
+
+                                    if (startPage > 1)
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-pageSize="@ViewBag.PageSize">1</a>
+                                        </li>
+                                        if (startPage > 2)
+                                        {
+                                            <li class="page-item disabled">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                        }
+                                    }
+
+                                    for (int i = startPage; i <= endPage; i++)
+                                    {
+                                        if (i == ViewBag.CurrentPage)
+                                        {
+                                            <li class="page-item active">
+                                                <span class="page-link">@i</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                                            </li>
+                                        }
+                                    }
+
+                                    if (endPage < ViewBag.TotalPages)
+                                    {
+                                        if (endPage < ViewBag.TotalPages - 1)
+                                        {
+                                            <li class="page-item disabled">
+                                                <span class="page-link">...</span>
+                                            </li>
+                                        }
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Index" asp-route-page="@ViewBag.TotalPages" asp-route-pageSize="@ViewBag.PageSize">@ViewBag.TotalPages</a>
+                                        </li>
+                                    }
+                                }
+
+                                <!-- Next Page -->
+                                @if (ViewBag.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-pageSize="@ViewBag.PageSize">
+                                            Next <i class="bi bi-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">
+                                            Next <i class="bi bi-chevron-right"></i>
+                                        </span>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <div class="newsletter-content">
+                    <h3>Stay Updated</h3>
+                    <p>Subscribe to our newsletter for the latest book releases and exclusive offers</p>
+                    <div class="newsletter-form">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Enter your email address">
+                            <button class="btn btn-primary"> <i class="fa-solid fa-envelope"></i> Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+
+<script>
+
+    $(document).ready(function() {
+        $('.filter-chip').on('click', function() {
+            $('.filter-chip').removeClass('active');
+            $(this).addClass('active');
+        });
+    });
+
+</script>
+}
