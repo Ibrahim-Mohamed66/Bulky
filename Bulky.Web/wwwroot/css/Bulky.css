@@ -931,8 +931,7 @@
         font-size: 1.5rem;
     }
     
-    .pricing-header,
-    .pricing-row {
+    .pricing-header,    .pricing-row {
         grid-template-columns: 1fr;
         text-align: center;
     }
@@ -942,3 +941,61 @@
         display: none;
     }
 }
+/*** Auth (Login/Register) — original gradient style ***/
+.auth-section {
+	background: linear-gradient(135deg, #192E2F 0%, #425F4B 100%);
+	position: relative;
+	color: #fff;
+}
+
+.auth-section .container { position: relative; z-index: 2; }
+
+.auth-hero {
+	padding: 2rem 1rem 2rem 0;
+}
+
+/* Status pages */
+.status-section.denied {
+	background: #f8f9fa;
+}
+
+.status-card {
+	border-radius: 1rem;
+}
+
+.status-icon {
+	width: 72px;
+	height: 72px;
+	border-radius: 50%;
+	background: rgba(202, 25, 41, 0.08);
+	color: #CA1929;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2rem;
+}
+
+.status-actions .btn-primary {
+	background: #192E2F;
+	border-color: #192E2F;
+}
+
+.status-actions .btn-primary:hover {
+	background: #425F4B;
+	border-color: #425F4B;
+}   
+
+/* Manage area */
+.manage-section .manage-card { border-radius: 1rem; }
+.manage-section .manage-nav { border-radius: 1rem; }
+.manage-pills .nav-link {
+	color: #192E2F;
+	border-radius: .5rem;
+	margin-bottom: .25rem;
+}
+.manage-pills .nav-link.active,
+.manage-pills .nav-link:hover {
+	background: #192E2F;
+	color: #fff;
+}
+.manage-pills .nav-link:focus { box-shadow: none; }   

@@ -1,7 +1,10 @@
 using Bulky.DataAccess.Data;
 using Bulky.DataAccess.Repositories;
 using Bulky.DataAccess.Repositories.IRepositories;
-
+using Bulky.Models.Models;
+using Bulky.Utility;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace BulkyWeb
@@ -16,9 +19,19 @@ namespace BulkyWeb
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
             var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<BulkyDbContext>(options =>options.UseSqlServer(defaultConnection));
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BulkyDbContext>().AddDefaultTokenProviders();
+            builder.Services.ConfigureApplicationCookie(options => {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
+
+                builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 
             var app = builder.Build();
@@ -33,9 +46,9 @@ namespace BulkyWeb
 
             app.UseHttpsRedirection();
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            app.MapRazorPages();
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
