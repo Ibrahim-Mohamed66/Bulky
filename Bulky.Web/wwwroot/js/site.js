@@ -1,4 +1,22 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿(function ($) {
+  $.cartCounter = function (count) {
+    var counter = $(".cart-counter");
 
-// Write your JavaScript code.
+    if (!counter.length) return; // no counter in DOM
+
+    if (count > 0) {
+      counter.text(count).show().addClass("cart-counter-animate");
+    } else {
+      counter.hide();
+    }
+
+    // remove animation class after it plays
+    setTimeout(() => counter.removeClass("cart-counter-animate"), 400);
+  };
+})(jQuery);
+
+$(document).ready(function () {
+  $.get("/Customer/Home/GetCartCount", function (response) {
+    $.cartCounter(response.count);
+  });   
+});

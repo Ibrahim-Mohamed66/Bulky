@@ -14,11 +14,15 @@ public class UnitOfWork: IUnitOfWork
         Category = new CategoryRepository(_dbContext);
         Product = new ProductRepository(_dbContext);
         Company = new CompanyRepository(_dbContext);
+        Cart = new CartRepository(_dbContext);
+        ApplicationUser = new ApplicationUserRepository(_dbContext);
     }
 
     public ICategoryRepository Category { get; private set; }
     public IProductRepository Product { get; private set; }
     public ICompanyRepository Company { get; private set; }
+    public ICartRepository Cart { get; private set; }
+    public IApplicationUserRepository ApplicationUser { get; private set; }
 
 
     public async Task SaveChangesAsync()

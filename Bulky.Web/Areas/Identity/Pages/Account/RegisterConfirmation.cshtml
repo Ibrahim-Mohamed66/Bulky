@@ -4,20 +4,42 @@
     ViewData["Title"] = "Register confirmation";
 }
 
-<h1>@ViewData["Title"]</h1>
-@{
-    if (@Model.DisplayConfirmAccountLink)
-    {
-<p>
-    This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf">these docs</a> for how to configure a real email sender.
-    Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl">Click here to confirm your account</a>
-</p>
-    }
-    else
-    {
-<p>
-        Please check your email to confirm your account.
-</p>
-    }
-}
+<section class="status-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-6">
+                <div class="status-card card shadow border-0">
+                    <div class="card-body p-4 p-md-5 text-center">
+                        <div class="status-icon mx-auto mb-4" style="background: rgba(25, 46, 47, 0.1); color: #192E2F;">
+                            <i class="bi bi-envelope-check"></i>
+                        </div>
+                        <h1 class="h3 mb-3" style="color: #192E2F;">Registration Successful!</h1>
+                        
+                        @{
+                            if (@Model.DisplayConfirmAccountLink)
+                            {
+                                <div class="alert alert-info border-0 mb-4">
+                                    <p class="mb-2">This app does not currently have a real email sender registered, see <a href="https://aka.ms/aspaccountconf" class="alert-link">these docs</a> for how to configure a real email sender.</p>
+                                    <p class="mb-0">Normally this would be emailed: <a id="confirm-link" href="@Model.EmailConfirmationUrl" class="alert-link">Click here to confirm your account</a></p>
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="text-muted mb-4">
+                                    Welcome to <span class="text-gradient fw-bold">Bulky</span>! Please check your email to confirm your account and start exploring our collection of books.
+                                </p>
+                            }
+                        }
+                        
+                        <div class="status-actions">
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary px-4">
+                                <i class="bi bi-house me-2"></i>Continue to Homepage
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 

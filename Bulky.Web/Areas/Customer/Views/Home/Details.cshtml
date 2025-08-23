@@ -1,6 +1,6 @@
-﻿@model Product
+﻿@model Cart
 @{
-    ViewData["Title"] = $"{Model.Title} - Bulky";
+    ViewData["Title"] = $"{Model.Product.Title} - Bulky";
 }
 
 <!-- Breadcrumb Navigation -->
@@ -12,7 +12,7 @@
                     <i class="bi bi-house"></i> Home
                 </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Product.Title</li>
         </ol>
     </div>
 </nav>
@@ -23,12 +23,12 @@
         <div class="row">
             <!-- Product Image -->
             <div class="col-lg-5 mb-4">
-                <div class="product-image-container">
+                <div class="product-main-image-container">
                     <div class="product-image-wrapper">
-                        <img src="@Model.ImageUrl" alt="@Model.Title" class="product-main-image" />
+                        <img src="@Model.Product.ImageUrl" alt="@Model.Product.Title" class="product-main-image" />
                     </div>
                     <div class="product-badges">
-                        <span class="badge bg-warning text-dark">@Model.Category.Name</span>
+                        <span class="badge bg-warning text-dark">@Model.Product.Category.Name</span>
                         <span class="badge bg-success">In Stock</span>
                     </div>
                 </div>
@@ -37,13 +37,13 @@
             <!-- Product Information -->
             <div class="col-lg-7">
                 <div class="product-info">
-                    <h1 class="product-title">@Model.Title</h1>
-                    <p class="product-author">by <strong>@Model.Author</strong></p>
+                    <h1 class="product-title">@Model.Product.Title</h1>
+                    <p class="product-author">by <strong>@Model.Product.Author</strong></p>
                     
                     <div class="product-meta mb-4">
                         <div class="meta-item">
                             <i class="bi bi-upc-scan"></i>
-                            <span>ISBN: @Model.ISBN</span>
+                            <span>ISBN: @Model.Product.ISBN</span>
                         </div>
                         <div class="meta-item">
                             <i class="bi bi-star-fill text-warning"></i>
@@ -53,7 +53,7 @@
 
                     <div class="product-description mb-4">
                         <h5>Description</h5>
-                        <p class="text-muted">@Html.Raw(Model.Description)</p>
+                        <p class="text-muted">@Html.Raw(Model.Product.Description)</p>
                     </div>
 
                     <!-- Pricing Table -->
@@ -67,56 +67,58 @@
                             </div>
                             <div class="pricing-row">
                                 <div class="pricing-col">1-50</div>
-                                <div class="pricing-col price-value">@Model.Price.ToString("c")</div>
-                                <div class="pricing-col savings">@(((Model.ListPrice - Model.Price) / Model.ListPrice * 100).ToString("F0"))%</div>
+                                <div class="pricing-col price-value">@Model.Product.Price.ToString("c")</div>
+                                <div class="pricing-col savings">@(((Model.Product.ListPrice - Model.Product.Price) / Model.Product.ListPrice * 100).ToString("F0"))%</div>
                             </div>
                             <div class="pricing-row">
                                 <div class="pricing-col">51-100</div>
-                                <div class="pricing-col price-value">@Model.Price50.ToString("c")</div>
-                                <div class="pricing-col savings">@(((Model.ListPrice - Model.Price50) / Model.ListPrice * 100).ToString("F0"))%</div>
+                                <div class="pricing-col price-value">@Model.Product.Price50.ToString("c")</div>
+                                <div class="pricing-col savings">@(((Model.Product.ListPrice - Model.Product.Price50) / Model.Product.ListPrice * 100).ToString("F0"))%</div>
                             </div>
                             <div class="pricing-row featured">
                                 <div class="pricing-col">100+</div>
-                                <div class="pricing-col price-value">@Model.Price100.ToString("c")</div>
-                                <div class="pricing-col savings">@(((Model.ListPrice - Model.Price100) / Model.ListPrice * 100).ToString("F0"))%</div>
+                                <div class="pricing-col price-value">@Model.Product.Price100.ToString("c")</div>
+                                <div class="pricing-col savings">@(((Model.Product.ListPrice - Model.Product.Price100) / Model.Product.ListPrice * 100).ToString("F0"))%</div>
                             </div>
                         </div>
                         <div class="msrp-info mt-2">
-                            <small class="text-muted">Normal Price: <span class="text-decoration-line-through">@Model.ListPrice.ToString("c")</span></small>
+                            <small class="text-muted">Normal Price: <span class="text-decoration-line-through">@Model.Product.ListPrice.ToString("c")</span></small>
                         </div>
                     </div>
 
                     <!-- Purchase Section -->
                     <div class="purchase-section">
                         <form method="post">
+                            <input hidden asp-for="ProductId" />
                             <div class="row align-items-end">
                                 <div class="col-md-4 mb-3">
                                     <label for="quantity" class="form-label">Quantity</label>
                                     <div class="input-group">
-                                        <button id="decreaseBtn" type="button" class="btn btn-secondary quantity-btn" onclick="decreaseQuantity()">
-                                            <i class="bi bi-dash"></i>
-                                        </button>
-                                        <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control text-center" />
-                                        <button id="increaseBtn" type="button" class="btn btn-secondary quantity-btn" onclick="increaseQuantity()">
-                                            <i class="bi bi-plus"></i>
-                                        </button>
+                                        <div class="quantity-input-group">
+                                            <div class="quantity-input-group">
+                                                <button type="button" class="quantity-btn quantity-decrease">
+                                                    <i class="bi bi-dash"></i>
+                                                </button>
+                                                <input asp-for="Count" id="quantity" type="number" class="quantity-input" value="@Model.Count" min="1" max="999">
+                                                <button type="button" class="quantity-btn quantity-increase">
+                                                    <i class="bi bi-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-8 mb-3">
                                     <div class="total-price">
                                         <span class="total-label">Total Price:</span>
-                                        <span class="total-amount" id="totalPrice">@Model.Price.ToString("c")</span>
+                                        <span class="total-amount" id="totalPrice">@Model.TotalPrice.ToString("c")</span>
                                     </div>
                                 </div>
                             </div>
                             
                             @*Disabled For Now (Coming Soon.....)*@
                             <div class="action-buttons">
-                                <button disabled type="submit" class="btn btn-primary btn-lg add-to-cart-btn">
+                                <button  type="submit" class="btn btn-primary btn-lg add-to-cart-btn">
                                     <i class="bi bi-cart-plus"></i> Add to Cart
-                                </button>
-                                <button disabled type="button" class="btn btn-outline-primary btn-lg wishlist-btn">
-                                    <i class="bi bi-heart"></i> Add to Wishlist
                                 </button>
                             </div>
                         </form>
@@ -161,15 +163,14 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function() {
-
+        $(document).ready(function () {
             const $quantityInput = $('#quantity');
             const $totalPrice = $('#totalPrice');
 
             function getUnitPrice(quantity) {
-                if (quantity > 100) return @Model.Price100;
-                if (quantity > 50) return @Model.Price50;
-                return @Model.Price;
+                if (quantity > 100) return @Model.Product.Price;
+                if (quantity > 50) return @Model.Product.Price50;
+                return @Model.Product.Price;
             }
 
             function updateTotalPrice() {
@@ -183,15 +184,14 @@
                 $totalPrice.text('$' + total.toFixed(2));
             }
 
-            $('#increaseBtn').on('click', function() {
-                let current = parseInt($quantityInput.val());
+            $('.quantity-increase').on('click', function (e) {
+                let current = parseInt($quantityInput.val()) || 1;
                 $quantityInput.val(current + 1);
                 updateTotalPrice();
             });
 
-
-            $('#decreaseBtn').on('click', function() {
-                let current = parseInt($quantityInput.val());
+            $('.quantity-decrease').on('click', function (e) {
+                let current = parseInt($quantityInput.val()) || 1;
                 if (current > 1) {
                     $quantityInput.val(current - 1);
                     updateTotalPrice();
@@ -203,6 +203,6 @@
             updateTotalPrice();
         });
     </script>
-
 }
+
 

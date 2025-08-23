@@ -1,0 +1,238 @@
+@model CartVM
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<div class="cart-container">
+    <div class="cart-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="cart-title-section">
+                        <h1 class="cart-title">Shopping Cart</h1>
+                        <p class="cart-subtitle">
+                            @if (Model.CartItems.Any())
+                            {
+                                <span>@Model.CartItems.Count() item@(Model.CartItems.Count() > 1 ? "s" : "") in your cart</span>
+                            }
+                            else
+                            {
+                                <span>Your cart is waiting to be filled</span>
+                            }
+                        </p>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <a asp-action="Index" asp-controller="Home" class="btn-continue-shopping">
+                        <i class="bi bi-arrow-left"></i>
+                        <span>Continue Shopping</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-4">
+        <div class="cart-content">
+            @if (Model.CartItems.Any())
+            {
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="cart-items-section">
+                            @foreach (var item in Model.CartItems)
+                            {
+                                <div class="cart-item-card" data-cart-id="@item.Id">
+                                    <div class="row align-items-center g-3">
+
+                                        <!-- Product Image -->
+                                        <div class="col-md-2">
+                                            <div class="product-image-container">
+                                                <img src="@item.Product.ImageUrl" class="img-fluid product-image" alt="@item.Product.Title">
+                                                <div class="image-overlay">
+                                                    <button class="btn-quick-view" title="Quick View">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Product Details -->
+                                        <div class="col-md-4">
+                                            <h3 class="product-title">@item.Product.Title</h3>
+                                            <p class="product-author">by @item.Product.Author</p>
+                                            @if (!string.IsNullOrEmpty(item.Product.Description))
+                                            {
+                                    <p class="description-text">
+                                        @Html.Raw(item.Product.Description.Length > 100
+                                                                                ? item.Product.Description.Substring(0, 100) + "..."
+                                                                                : item.Product.Description)
+                                    </p>
+                                                                        }
+
+                                            <div class="price-display">
+                                                @if (item.Count > 100)
+                                                {
+                                                    <span class="price-original">@item.Product.Price.ToString("c") </span>
+                                                    <span class="price-current">@item.Product.Price100.ToString("c") </span>
+                                                    <span class="discount-badge">Bulk Discount</span>
+                                                }
+                                                else if (item.Count > 50)
+                                                {
+                                                    <span class="price-original">@item.Product.Price.ToString("c") </span>
+                                                    <span class="price-current">@item.Product.Price50.ToString("c") </span>
+                                                    <span class="discount-badge">Volume Discount</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="price-current">@item.Product.Price.ToString("c")</span>
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <!-- Quantity Controls -->
+                                        <div class="col-md-3">
+                                            <label class="quantity-label">Quantity</label>
+                                            <div class="quantity-input-group">
+                                                <a asp-action="Minus" class="quantity-btn quantity-decrease" asp-route-cartId="@item.Id">
+                                                    <i class="bi bi-dash"></i>
+                                                </a>
+                                                <input disabled  asp-for="@item.Count" type="number" class="form-control quantity-input" value="@item.Count" min="1" max="999" data-cart-id="@item.Id">
+                                                <a asp-action="Plus" class="quantity-btn quantity-increase" asp-route-cartId="@item.Id">
+                                                    <i class="bi bi-plus"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Item Total -->
+                                        <div class="col-md-2">
+                                            <div class="total-label">Total</div>
+                                            <div class="total-amount">@item.TotalPrice.ToString("c")</div>
+                                        </div>
+
+                                        <!-- Remove Action -->
+                                        <div class="col-md-1 text-end">
+                                            <a asp-action="Remove" class="btn-remove" asp-route-cartId="@item.Id" title="Remove from cart">
+                                                <i class="bi bi-trash3"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="cart-summary-card">
+                            <div class="summary-header">
+                                <h3>Order Summary</h3>
+                                <div class="summary-item-count">@Model.CartItems.Count() item@(Model.CartItems.Count() > 1 ? "s" : "")</div>
+                            </div>
+
+                            <div class="summary-content">
+                                <div class="summary-line">
+                                    <span class="summary-label">Subtotal</span>
+                                    <span class="summary-value">@Model.CartItems.Sum(i => i.TotalPrice).ToString("c")</span>
+                                </div>
+
+                                <div class="summary-line">
+                                    <span class="summary-label">Shipping</span>
+                                    <span class="summary-value">
+                                        <span class="free-shipping">Free</span>
+                                        <small class="shipping-note">Orders over $25</small>
+                                    </span>
+                                </div>
+
+                                <div class="summary-line tax-line">
+                                    <span class="summary-label">Tax</span>
+                                    <span class="summary-value">Calculated at checkout</span>
+                                </div>
+
+                                <div class="summary-divider"></div>
+
+                                <div class="summary-total">
+                                    <span class="total-label">Total</span>
+                                    <span class="total-value">@Model.CartItems.Sum(i => i.TotalPrice).ToString("c")</span>
+                                </div>
+
+                            </div>
+
+                            <div class="checkout-section">
+                                <a asp-controller="Checkout" asp-action="Index" class="btn-checkout">
+                                    <span class="checkout-text">Proceed to Checkout</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+
+                                <div class="security-badges">
+                                    <div class="security-item">
+                                        <i class="bi bi-shield-check"></i>
+                                        <span>Secure Checkout</span>
+                                    </div>
+                                    <div class="security-item">
+                                        <i class="bi bi-truck"></i>
+                                        <span>Free Returns</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="empty-cart-container">
+                    <div class="empty-cart-content">
+                        <div class="empty-cart-icon">
+                            <i class="bi bi-cart-x"></i>
+                        </div>
+                        <h2 class="empty-cart-title">Your cart is empty</h2>
+                        <p class="empty-cart-subtitle">Looks like you haven't added any items to your cart yet.</p>
+
+                        <div class="empty-cart-actions">
+                            <a asp-controller="Home" asp-action="Index" class="btn-start-shopping">
+                                <i class="bi bi-shop"></i>
+                                <span>Start Shopping</span>
+                            </a>
+                        </div>
+
+                        <div class="popular-categories">
+                            <h3>Popular Categories</h3>
+                            <div class="category-links">
+                                <a href="#" class="category-link">Fiction</a>
+                                <a href="#" class="category-link">Non-Fiction</a>
+                                <a href="#" class="category-link">Science</a>
+                                <a href="#" class="category-link">Technology</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            function validateQuantity($input) {
+                let quantity = parseInt($input.val());
+                if (isNaN(quantity) || quantity < 1) {
+                    quantity = 1;
+                } else if (quantity > 999) {
+                    quantity = 999;
+                }
+                $input.val(quantity);
+            }
+
+            $(".quantity-input").each(function () {
+                validateQuantity($(this));
+            });
+
+            $(document).on("input blur", ".quantity-input", function () {
+                validateQuantity($(this));
+            });
+        });
+    </script>
+}

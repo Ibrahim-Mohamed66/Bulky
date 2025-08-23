@@ -5,22 +5,39 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData["Title"]</h3>
+<div class="d-flex align-items-center mb-4">
+    <div class="status-icon me-3" style="background: rgba(25, 46, 47, 0.1); color: #192E2F; width: 48px; height: 48px; font-size: 1.2rem;">
+        <i class="bi bi-person-circle"></i>
+    </div>
+    <div>
+        <h3 class="mb-1" style="color: #192E2F;">@ViewData["Title"]</h3>
+        <p class="text-muted mb-0">Manage your personal information</p>
+    </div>
+</div>
+
 <partial name="_StatusMessage" for="StatusMessage" />
+
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
         <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+            
             <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
-                <label asp-for="Username" class="form-label"></label>
+                <input asp-for="Username" class="form-control bg-light" placeholder="Please choose your username." disabled />
+                <label asp-for="Username" class="form-label">Username (Email)</label>
+                <div class="form-text">This is your email address and cannot be changed.</div>
             </div>
-            <div class="form-floating mb-3">
+            
+            <div class="form-floating mb-4">
                 <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <label asp-for="Input.PhoneNumber" class="form-label">Phone Number</label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <div class="form-text">Optional: Used for order notifications and account security.</div>
             </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+            
+            <button id="update-profile-button" type="submit" class="btn btn-lg btn-primary px-4">
+                <i class="bi bi-check-circle me-2"></i>Save Changes
+            </button>
         </form>
     </div>
 </div>
