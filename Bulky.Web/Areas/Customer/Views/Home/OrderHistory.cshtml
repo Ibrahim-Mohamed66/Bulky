@@ -1,0 +1,116 @@
+@model OrdersHistoryVM
+
+@{
+    ViewData["Title"] = "Order History";
+}
+
+<div class="order-history-section">
+    <div class="section-header text-center mb-5">
+        <h2 class="section-title">
+            <i class="fas fa-history me-2"></i>Order History
+        </h2>
+        <p class="section-subtitle">Track and review your previous orders</p>
+    </div>
+
+    @if (!Model.OrderHeaderList.Any())
+    {
+        <div class="empty-state text-center py-5">
+            <div class="empty-icon mb-4">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
+            <h4 class="empty-title">No Orders Yet</h4>
+            <p class="empty-subtitle">You haven't placed any orders yet. Start shopping to see your order history here!</p>
+            <a href="/" class="btn btn-bulky mt-3">
+                <i class="fas fa-shopping-cart me-2"></i>Start Shopping
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="orders-accordion" id="ordersAccordion">
+            @foreach (var order in Model.OrderHeaderList)
+            {
+                var orderDetails = Model.OrderDetailList.Where(od => od.OrderHeaderId == order.Id);
+                <div class="order-card mb-4">
+                    <div class="order-header" id="heading-@order.Id">
+                        <button class="order-toggle w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@order.Id" aria-expanded="false" aria-controls="collapse-@order.Id">
+                            <div class="order-summary">
+                                <div class="order-info">
+                                    <div class="order-number">
+                                        <i class="fas fa-box me-2"></i>
+                                        <span class="order-id">Order #@order.Id</span>
+                                    </div>
+                                    <div class="order-meta">
+                                        <span class="order-date">
+                                            <i class="fas fa-calendar-alt me-1"></i>
+                                            @order.OrderDate.ToString("dd MMM yyyy")
+                                        </span>
+                                        <span class="order-status status-@order.OrderStatus.ToLower().Replace(" ", "-")">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            @order.OrderStatus
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="order-total">
+                                    <span class="total-amount">@order.OrderTotal.ToString("C")</span>
+                                    <i class="fas fa-chevron-down toggle-icon"></i>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div id="collapse-@order.Id" class="order-collapse collapse" aria-labelledby="heading-@order.Id" data-bs-parent="#ordersAccordion">
+                        <div class="order-details">
+                            <div class="products-table-wrapper">
+                                <table class="products-table">
+                                    <thead>
+                                        <tr>
+                                            <th><i class="fas fa-tag me-1"></i>Product</th>
+                                            <th><i class="fas fa-sort-numeric-up me-1"></i>Quantity</th>
+                                            <th><i class="fas fa-dollar-sign me-1"></i>Price</th>
+                                            <th><i class="fas fa-calculator me-1"></i>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in orderDetails)
+                                        {
+                                            <tr>
+                                                <td class="product-info">
+                                                    <i class="fas fa-book me-2 text-muted"></i>
+                                                    <span class="product-title">@item.Product.Title</span>
+                                                </td>
+                                                <td class="quantity">@item.Count</td>
+                                                <td class="price">@item.Product.Price.ToString("C")</td>
+                                                <td class="total">@((item.Price * item.Count).ToString("C"))</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="order-summary-footer">
+                                <div class="order-total-section">
+                                    <div class="total-row">
+                                        <span class="total-label">
+                                            <i class="fas fa-money-bill-wave me-2"></i>Order Total:
+                                        </span>
+                                        <span class="total-value">@order.OrderTotal.ToString("C")</span>
+                                    </div>
+                                </div>
+
+                                <div class="shipping-info">
+                                    <h6 class="shipping-title">
+                                        <i class="fas fa-map-marker-alt me-2"></i>Shipping Address
+                                    </h6>
+                                    <p class="shipping-address">
+                                        @order.StreetAddress<br>
+                                        @order.City, @order.State @order.PostalCode
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

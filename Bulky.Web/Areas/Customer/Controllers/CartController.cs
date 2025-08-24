@@ -177,6 +177,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 Session session = service.Get(orderHeader.SessionId);
                 if(session.PaymentStatus.ToLower() == "paid")
                 {
+                    _unitOfWork.OrderHeader.UpdateStripePaymentId(id, session.Id, session.PaymentIntentId);
                     _unitOfWork.OrderHeader.UpdateStatus(id, StaticData.StatusApproved, StaticData.PaymentStatusApproved);
                     await _unitOfWork.SaveChangesAsync();
                     orderHeader = await _unitOfWork.OrderHeader.GetByIdAsync(id,
@@ -265,7 +266,6 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
             return RedirectToAction("Index");
         }
-
 
     }
 }

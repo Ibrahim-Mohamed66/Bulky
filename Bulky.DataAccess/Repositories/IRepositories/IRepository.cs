@@ -6,8 +6,8 @@ public interface IRepository<TEntity, TId> where TEntity : class
 {
     Task AddAsync(TEntity entity);
     Task<IEnumerable<TEntity>> GetAllAsync(
-                                            int pageNumber = 1,
-                                            int pageSize = 10,
+                                            int pageNumber = 0,
+                                            int pageSize = 0,
                                             Expression<Func<TEntity, bool>>? filter = null,
                                             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
                                             params Expression<Func<TEntity, object>>[]? includes);

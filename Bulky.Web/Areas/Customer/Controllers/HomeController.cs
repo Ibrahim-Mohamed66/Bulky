@@ -1,5 +1,6 @@
 using Bulky.DataAccess.Repositories.IRepositories;
 using Bulky.Models.Models;
+using Bulky.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -22,6 +23,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
+            if(pageSize <= 0) pageSize = 10;
+            if(page <= 1) page = 1; 
             var totalProducts = await _unitOfWork.Product.GetCountAsync(p => p.IsHidden == false);
 
             var totalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
@@ -156,7 +159,28 @@ namespace BulkyWeb.Areas.Customer.Controllers
             return Json(new { count = count });
         }
 
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> OrderHistory()
+        {
+            var claims = (ClaimsIdentity)User.Identity;
+            var userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var orders = await _unitOfWork.OrderHeader.GetAllAsync(
+                filter: o => o.ApplicationUserId == userId,
+                orderBy: q => q.OrderByDescending(o => o.OrderDate));
 
+            var orderIds = orders.Select(o => o.Id).ToList();
+            var orderDetails = await _unitOfWork.OrderDetail.GetAllAsync(
+                filter: od => orderIds.Contains(od.OrderHeaderId),
+                includes: od => od.Product);
+            var orderVm = new OrdersHistoryVM()
+            {
+                OrderHeaderList = orders ,
+                OrderDetailList = orderDetails
+            };
+
+            return View(orderVm);
+        }
 
 
         public IActionResult Privacy()

@@ -41,15 +41,13 @@ public class Repository<TEntity, TId> : IRepository<TEntity, TId> where TEntity 
 
 
     public async Task<IEnumerable<TEntity>> GetAllAsync(
-        int pageNumber = 1,
-        int pageSize = 10,
+        int pageNumber = 0,
+        int pageSize = 0,
         Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         params Expression<Func<TEntity, object>>[]? includes)
     {
         // Ensure pageNumber and pageSize are valid
-        if (pageNumber < 1) pageNumber = 1;
-        if (pageSize < 1) pageSize = 10;
 
 
         IQueryable<TEntity> query = _dbSet.AsNoTracking();
@@ -64,10 +62,14 @@ public class Repository<TEntity, TId> : IRepository<TEntity, TId> where TEntity 
 
         if (orderBy != null)
             query = orderBy(query);
+        // Apply pagination only if both pageNumber and pageSize are valid
+        if (pageNumber > 0 && pageSize > 0)
+        {
+            query = query.Skip((pageNumber - 1) * pageSize)
+                         .Take(pageSize);
+        }
 
-        return await query.Skip((pageNumber - 1) * pageSize)
-                          .Take(pageSize)
-                          .ToListAsync();
+        return await query.ToListAsync();
     }
 
     public async Task<TEntity?> GetByIdAsync(TId id, params Expression<Func<TEntity, object>>[]? includes)

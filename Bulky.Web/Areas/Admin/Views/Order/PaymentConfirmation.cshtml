@@ -1,0 +1,189 @@
+﻿@model OrderVM
+
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+@if (Model?.OrderHeader == null)
+{
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="alert alert-danger">
+                    <h4>Order Not Found</h4>
+                    <p>We couldn't find the order you're looking for.</p>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Return to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Order Confirmation Header -->
+                <div class="text-center mb-5">
+                    <div class="mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                    </div>
+                    <h1 class="h2 text-success mb-3">Order Confirmed!</h1>
+                    <p class="lead text-muted">Thank you for your order. We'll send you an email confirmation shortly.</p>
+                    <div class="alert alert-success" role="alert">
+                        <strong>Order #@Model.OrderHeader.Id</strong> has been placed successfully
+                    </div>
+                </div>
+
+                <!-- Order Details Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-receipt me-2"></i>Order Details
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Order Information</h6>
+                                <p><strong>Order Number:</strong> #@Model.OrderHeader.Id</p>
+                                <p><strong>Order Date:</strong> @Model.OrderHeader.OrderDate.ToString("MMMM dd, yyyy")</p>
+                                <p>
+                                    <strong>Order Status:</strong>
+                                    <span class="badge bg-info">@Model.OrderHeader.OrderStatus</span>
+                                </p>
+                                <p>
+                                    <strong>Payment Status:</strong>
+                                    <span class="badge bg-warning">@Model.OrderHeader.PaymentStatus</span>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted">Customer Information</h6>
+                                <p><strong>Name:</strong> @Model.OrderHeader.FirstName @Model.OrderHeader.LastName</p>
+                                <p><strong>Phone:</strong> @(Model.OrderHeader.PhoneNumber ?? "N/A")</p>
+                                <p><strong>Email:</strong> @(Model.OrderHeader.ApplicationUser?.Email ?? "N/A")</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Address Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-shipping-fast me-2"></i>Shipping Address
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <address class="mb-0">
+                            @Model.OrderHeader.FirstName @Model.OrderHeader.LastName<br>
+                            @Model.OrderHeader.StreetAddress<br>
+                            @Model.OrderHeader.City, @Model.OrderHeader.State @Model.OrderHeader.PostalCode<br>
+                            <strong>Phone:</strong> @Model.OrderHeader.PhoneNumber
+                        </address>
+                    </div>
+                </div>
+
+                <!-- Order Items Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-box me-2"></i>Order Items
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.OrderDetail != null && Model.OrderDetail.Any())
+                        {
+                            @foreach (var item in Model.OrderDetail)
+                            {
+                                <div class="row align-items-center border-bottom py-3">
+                                    <div class="col-md-2">
+                                        @if (!string.IsNullOrEmpty(item.Product?.ImageUrl))
+                                        {
+                                            <img src="@item.Product.ImageUrl" alt="@item.Product.Title" class="img-fluid rounded" style="max-height: 80px;">
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 80px; width: 80px;">
+                                                <i class="fas fa-image text-muted"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 class="mb-1">@(item.Product?.Title ?? "Product")</h6>
+                                        <p class="text-muted small mb-0">@(item.Product?.Author ?? "")</p>
+                                        <p class="text-muted small mb-0">@(item.Product?.ISBN ?? "")</p>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <span class="fw-bold">Qty: @item.Count</span>
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        <span class="fw-bold">@item.Price.ToString("c")</span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="text-center py-4">
+                                <p class="text-muted">No items found for this order.</p>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+                <!-- Order Summary Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-calculator me-2"></i>Order Summary
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="mb-1">Subtotal (@(Model.OrderDetail?.Count() ?? 0) items):</p>
+                                <p class="mb-1">Shipping:</p>
+                                <p class="mb-1">Tax:</p>
+                                <hr>
+                                <h5 class="mb-0">Total:</h5>
+                            </div>
+                            <div class="col-6 text-end">
+                                <p class="mb-1">@Model.OrderHeader.OrderTotal.ToString("c")</p>
+                                <p class="mb-1">Free</p>
+                                <p class="mb-1">$0.00</p>
+                                <hr>
+                                <h5 class="mb-0 text-success">@Model.OrderHeader.OrderTotal.ToString("c")</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="text-center">
+                    <a href="@Url.Action("Index", "Order")" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Orders
+                    </a>
+                    <button class="btn btn-outline-secondary btn-lg" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i>Print Order
+                    </button>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="alert alert-info mt-4" role="alert">
+                    <h6 class="alert-heading">What's Next?</h6>
+                    <ul class="mb-0">
+                        <li>You'll receive an email confirmation shortly</li>
+                        <li>We'll notify you when your order ships</li>
+                        <li>Track your order status in your account</li>
+                        <li>Contact customer service if you have any questions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

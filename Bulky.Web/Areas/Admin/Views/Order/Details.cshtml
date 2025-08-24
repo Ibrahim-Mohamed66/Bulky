@@ -1,0 +1,392 @@
+﻿@model OrderVM
+<form method="post">
+    <input asp-for="OrderHeader.Id" hidden />
+    
+    <!-- Order Details Section with modern styling -->
+    <div class="order-details-section py-5">
+        <div class="container">
+            <div class="order-details-card">
+                <div class="order-header">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-8">
+                                <div class="d-flex align-items-center">
+                                    <div class="order-icon me-3">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="mb-1">Order Details</h3>
+                                        <p class="mb-0">Order #@Model.OrderHeader.Id</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 text-md-end mt-3 mt-md-0">
+                                <a asp-action="Index" class="order-back-btn">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Orders
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-content">
+                    <div class="row">
+                        <div class="col-12 col-lg-7 mb-4 mb-lg-0">
+                            <div class="pickup-details-section">
+                                <div class="section-header mb-4">
+                                    <h4>
+                                        <i class="fas fa-map-marker-alt me-2 accent-icon"></i>
+                                        Pickup & Contact Details
+                                    </h4>
+                                    <div class="section-divider"></div>
+                                </div>
+                                
+                                <div class="details-grid">
+                                    <!-- Name Section -->
+                                    <div class="detail-row">
+                                        <label class="detail-label">Full Name</label>
+                                        <div class="name-inputs">
+                                            @if (User.IsInRole(StaticData.Role_Admin) || User.IsInRole(StaticData.Role_Employee)) {
+                                                <div>
+                                                    <input asp-for="OrderHeader.FirstName" type="text" class="form-control modern-input" />
+                                                    <span asp-validation-for="OrderHeader.FirstName" class="text-danger small"></span>
+                                                </div>
+                                                <div>
+                                                    <input asp-for="OrderHeader.LastName" type="text" class="form-control modern-input" />
+                                                    <span asp-validation-for="OrderHeader.LastName" class="text-danger small"></span>
+                                                </div>
+                                            }
+                                            else {
+                                                <input asp-for="OrderHeader.FirstName" readonly type="text" class="form-control modern-input" />
+                                                <input asp-for="OrderHeader.LastName" readonly type="text" class="form-control modern-input" />
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <!-- Phone -->
+                                    <div class="detail-row">
+                                        <label class="detail-label">Phone Number</label>
+                                        <div>
+                                            @if (User.IsInRole(StaticData.Role_Admin) || User.IsInRole(StaticData.Role_Employee)) {
+                                                <input asp-for="OrderHeader.PhoneNumber" type="text" class="form-control modern-input" />
+                                                <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger small"></span>
+                                            }
+                                            else {
+                                                <input asp-for="OrderHeader.PhoneNumber" readonly type="text" class="form-control modern-input" />
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <!-- Address -->
+                                    <div class="detail-row">
+                                        <label class="detail-label">Street Address</label>
+                                        <div>
+                                            @if (User.IsInRole(StaticData.Role_Admin) || User.IsInRole(StaticData.Role_Employee)) {
+                                                <input asp-for="OrderHeader.StreetAddress" type="text" class="form-control modern-input" />
+                                                <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger small"></span>
+                                            }
+                                            else {
+                                                <input asp-for="OrderHeader.StreetAddress" readonly type="text" class="form-control modern-input" />
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <!-- City, State, Zip -->
+                                    <div class="detail-row">
+                                        <label class="detail-label">Location</label>
+                                        <div class="location-inputs">
+                                            @if (User.IsInRole(StaticData.Role_Admin) || User.IsInRole(StaticData.Role_Employee)) {
+                                                <div>
+                                                    <input asp-for="OrderHeader.City" type="text" placeholder="City" class="form-control modern-input" />
+                                                    <span asp-validation-for="OrderHeader.City" class="text-danger small"></span>
+                                                </div>
+                                                <div>
+                                                    <input asp-for="OrderHeader.State" type="text" placeholder="State" class="form-control modern-input" />
+                                                    <span asp-validation-for="OrderHeader.State" class="text-danger small"></span>
+                                                </div>
+                                                <div>
+                                                    <input asp-for="OrderHeader.PostalCode" type="text" placeholder="Zip Code" class="form-control modern-input" />
+                                                    <span asp-validation-for="OrderHeader.PostalCode" class="text-danger small"></span>
+                                                </div>
+                                            }
+                                            else {
+                                                <input asp-for="OrderHeader.City" readonly type="text" class="form-control modern-input" />
+                                                <input asp-for="OrderHeader.State" readonly type="text" class="form-control modern-input" />
+                                                <input asp-for="OrderHeader.PostalCode" readonly type="text" class="form-control modern-input" />
+                                            }
+                                        </div>
+                                    </div>
+                                    <!-- Email -->
+                                    <div class="detail-row">
+                                        <label class="detail-label">Email Address</label>
+                                        <div>
+                                            <input asp-for="OrderHeader.ApplicationUser.Email" readonly type="text" class="form-control modern-input" />
+                                        </div>
+                                    </div>
+
+                                    <!-- Order Date -->
+                                    <div class="detail-row">
+                                        <label class="detail-label">Order Date</label>
+                                        <div>
+                                            <input value="@Model.OrderHeader.OrderDate.ToShortDateString()" readonly type="text" class="form-control modern-input" />
+                                        </div>
+                                    </div>
+
+                                    <!-- Carrier -->
+                                    <div class="detail-row">
+                                        <label class="detail-label">Carrier</label>
+                                        <div>
+                                            @if (User.IsInRole(StaticData.Role_Admin) || User.IsInRole(StaticData.Role_Employee)) {
+                                                <input asp-for="OrderHeader.Carrier" id="carrier" type="text" class="form-control modern-input" />
+                                            }
+                                            else {
+                                                <input asp-for="OrderHeader.Carrier" readonly type="text" class="form-control modern-input" />
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <!-- Tracking -->
+                                    <div class="detail-row">
+                                        <label class="detail-label">Tracking Number</label>
+                                        <div>
+                                            @if (User.IsInRole(StaticData.Role_Admin) || User.IsInRole(StaticData.Role_Employee)) {
+                                                <input asp-for="OrderHeader.TrackingNumber" id="trackingNumber" type="text" class="form-control modern-input" />
+                                            }
+                                            else {
+                                                <input asp-for="OrderHeader.TrackingNumber" readonly type="text" class="form-control modern-input" />
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <!-- Shipping Date -->
+                                    <div class="detail-row">
+                                        <label class="detail-label">Shipping Date</label>
+                                        <div>
+                                            <input value="@Model.OrderHeader.ShippingDate.ToShortDateString()" readonly type="text" class="form-control modern-input" />
+                                        </div>
+                                    </div>
+
+                                    @if (User.IsInRole(StaticData.Role_Admin) || User.IsInRole(StaticData.Role_Employee)) {
+                                        <!-- Session ID -->
+                                        <div class="detail-row">
+                                            <label class="detail-label">Session ID</label>
+                                            <div>
+                                                <input asp-for="OrderHeader.SessionId" readonly type="text" class="form-control modern-input" />
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Payment Intent ID -->
+                                        <div class="detail-row">
+                                            <label class="detail-label">Payment Intent ID</label>
+                                            <div>
+                                                <input asp-for="OrderHeader.PaymentIntentId" readonly type="text" class="form-control modern-input" />
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <!-- Payment Date/Due Date -->
+                                    <div class="detail-row">
+                                        @if (Model.OrderHeader.SessionId == null) {
+                                            <label class="detail-label">Payment Due Date</label>
+                                            <div>
+                                                <input value="@Model.OrderHeader.PaymentDueDate.ToShortDateString()" readonly type="text" class="form-control modern-input" />
+                                            </div>
+                                        }
+                                        else {
+                                            <label class="detail-label">Payment Date</label>
+                                            <div>
+                                                <input value="@Model.OrderHeader.PaymentDate.ToShortDateString()" readonly type="text" class="form-control modern-input" />
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <!-- Payment Status -->
+                                    <div class="detail-row">
+                                        <label class="detail-label">Payment Status</label>
+                                        <div>
+                                            <input asp-for="OrderHeader.PaymentStatus" readonly type="text" class="form-control modern-input" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                @if (User.IsInRole(StaticData.Role_Admin) || User.IsInRole(StaticData.Role_Employee)) {
+                                    <div class="mt-4">
+                                        <button type="submit" asp-action="UpdateOrderDetail" class="btn modern-btn-warning">
+                                            <i class="fas fa-edit me-2"></i>Update Order Details
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 col-lg-5">
+                            <div class="order-summary-section">
+                                <div class="section-header mb-4">
+                                    <h4>
+                                        <i class="fas fa-receipt me-2 accent-icon"></i>
+                                        Order Summary
+                                    </h4>
+                                    <div class="section-divider"></div>
+                                </div>
+                                
+                                <!-- Order Status -->
+                                <div class="status-badge mb-4">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Order Status: @Model.OrderHeader.OrderStatus
+                                    </h5>
+                                </div>
+
+                                <!-- Order Items -->
+                                <div class="order-items">
+                                    <h6>Items Ordered</h6>
+                                    <div class="items-list">
+                                        @foreach (var detail in Model.OrderDetail) {
+                                            <div class="order-item">
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div class="item-details flex-grow-1">
+                                                        <h6>@detail.Product.Title</h6>
+                                                        <div class="item-meta">
+                                                            <small>
+                                                                <i class="fas fa-dollar-sign me-1"></i>
+                                                                Price: @detail.Product.Price.ToString("c")
+                                                            </small>
+                                                            <small>
+                                                                <i class="fas fa-times me-1"></i>
+                                                                Quantity: @detail.Count
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="item-total text-end">
+                                                        <div class="price-display">
+                                                            @((detail.Count * detail.Product.Price).ToString("c"))
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        
+                                        <!-- Total -->
+                                        <div class="order-total">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h5 class="mb-0">
+                                                    <i class="fas fa-calculator me-2"></i>
+                                                    ORDER TOTAL
+                                                </h5>
+                                                <h4 class="mb-0">
+                                                    @Model.OrderHeader.OrderTotal.ToString("c")
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="action-buttons mt-4">
+                                    @if (Model.OrderHeader.PaymentStatus == StaticData.PaymentStatusDelayedPayment &&
+                                    Model.OrderHeader.OrderStatus == StaticData.StatusShipped) {
+                                        <button type="submit" asp-action="DetailsPayNow" class="btn modern-btn-success">
+                                            <i class="fas fa-credit-card me-2"></i>Pay Now
+                                        </button>
+                                    }
+                                    
+                                    @if (User.IsInRole(StaticData.Role_Admin) || User.IsInRole(StaticData.Role_Employee)) {
+                                        @if (Model.OrderHeader.OrderStatus == StaticData.StatusApproved) {
+                                            <button type="submit" id="process-order" asp-action="StartProcessing" class="btn modern-btn-primary">
+                                                <i class="fas fa-play me-2"></i>Start Processing
+                                            </button>
+                                        }
+                                        
+                                        @if (Model.OrderHeader.OrderStatus == StaticData.StatusInProcess) {
+                                            <button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn modern-btn-primary ship-order">
+                                                <i class="fas fa-shipping-fast me-2"></i>Ship Order
+                                            </button>
+                                        }
+
+                                        @if (Model.OrderHeader.OrderStatus != StaticData.StatusRefunded &&
+                                           Model.OrderHeader.OrderStatus != StaticData.StatusCancelled &&
+                                           Model.OrderHeader.OrderStatus != StaticData.StatusShipped) {
+                                            <button asp-action="CancelOrder" type="submit" class="btn modern-btn-danger">
+                                                <i class="fas fa-times me-2"></i>Cancel Order
+                                            </button>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+
+            // Form validation on submit
+            $('form').on('submit', function (e) {
+                if ($(document.activeElement).hasClass('ship-order')) {
+                    let carrier = $('#carrier').val().trim();
+                    let trackingNumber = $('#trackingNumber').val().trim();
+
+                    if (!carrier) {
+                        e.preventDefault();
+                        Swal.fire({
+                            title: 'Missing Information',
+                            text: 'Please enter a carrier name before shipping the order.',
+                            icon: 'warning',
+                            confirmButtonColor: '#192E2F',
+                            confirmButtonText: 'OK'
+                        });
+                        $('#carrier').focus();
+                        return;
+                    }
+
+                    if (!trackingNumber) {
+                        e.preventDefault();
+                        Swal.fire({
+                            title: 'Missing Information',
+                            text: 'Please enter a tracking number before shipping the order.',
+                            icon: 'warning',
+                            confirmButtonColor: '#192E2F',
+                            confirmButtonText: 'OK'
+                        });
+                        $('#trackingNumber').focus();
+                        return;
+                    }
+                }
+            });
+
+            // Process order confirmation
+           $('#process-order').on('click', function (e) {
+                e.preventDefault(); // prevent default form submission
+
+                const $form = $(this).closest('form'); // get the form
+                Swal.fire({
+                    title: 'Process Order?',
+                    text: 'Are you sure you want to process this order?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#192E2F',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, process it!',
+                    customClass: {
+                        popup: 'modern-swal-popup',
+                        confirmButton: 'modern-swal-confirm',
+                        cancelButton: 'modern-swal-cancel'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the form to trigger the action
+                        $form.attr('action', '@Url.Action("StartProcessing", "Order")');
+                        $form.submit();
+                    }
+                });
+            });
+           
+
+        });
+    </script>
+}
+

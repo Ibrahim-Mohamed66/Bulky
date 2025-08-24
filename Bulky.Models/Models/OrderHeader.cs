@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Bulky.Models.Models;
 
@@ -44,5 +45,7 @@ public class OrderHeader
     public string PostalCode { get; set; }
     [Required]
     public string PhoneNumber { get; set; }
+    [JsonIgnore]
+    public string FullName => $"{FirstName} {LastName}";
 
 }
