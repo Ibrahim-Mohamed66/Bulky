@@ -8,6 +8,8 @@ public interface IUnitOfWork
     ICompanyRepository Company { get; }
     ICartRepository Cart { get; }
     IApplicationUserRepository ApplicationUser { get; }
+    IOrderHeaderRepository OrderHeader { get; }
+    IOrderDetailRepository OrderDetail { get; }
 
     Task SaveChangesAsync();
 }

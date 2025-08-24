@@ -1,0 +1,245 @@
+@model CartVM
+
+@{
+    ViewData["Title"] = "Order Summary";
+    var minArrivalDate = DateTime.Now.AddDays(2);
+    var maxArrivalDate = DateTime.Now.AddDays(5);
+}
+
+<div class="cart-container">
+    <div class="cart-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="cart-title-section">
+                        <h1 class="cart-title">Order Summary</h1>
+                        <p class="cart-subtitle">Review your order before completing your purchase</p>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <a asp-action="Index" class="btn-continue-shopping">
+                        <i class="bi bi-arrow-left"></i>
+                        <span>Back to Cart</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-4">
+        @if (Model.CartItems.Any())
+        {
+            <form asp-action="Summary" method="post">
+                <div class="row">
+                    <!-- LEFT: Order Items + Shipping Info -->
+                    <div class="col-lg-8">
+
+                        <!-- Order Items Section -->
+                        <div class="cart-items-section mb-4">
+                            <div class="section-header">
+                                <h3>Order Items</h3>
+                                <span class="summary-item-count">@Model.CartItems.Count() item@(Model.CartItems.Count() > 1 ? "s" : "")</span>
+                            </div>
+
+                            <div class="order-items-list">
+                                @foreach (var item in Model.CartItems)
+                                {
+                                    <div class="cart-item-card">
+                                        <div class="row align-items-center">
+                                            <!-- Product Image -->
+                                            <div class="col-md-2">
+                                                <img src="@item.Product.ImageUrl" class="img-fluid product-image" alt="@item.Product.Title">
+                                            </div>
+
+                                            <!-- Product Details -->
+                                            <div class="col-md-6">
+                                                <h4 class="product-title">@item.Product.Title</h4>
+                                                <p class="product-author">by @item.Product.Author</p>
+                                                <div class="price-display">
+                                                    @if (item.Count > 100)
+                                                    {
+                                                        <span class="price-current">@item.Product.Price100.ToString("c") each</span>
+                                                        <span class="discount-badge">Bulk Discount</span>
+                                                    }
+                                                    else if (item.Count > 50)
+                                                    {
+                                                        <span class="price-current">@item.Product.Price50.ToString("c") each</span>
+                                                        <span class="discount-badge">Volume Discount</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="price-current">@item.Product.Price.ToString("c") each</span>
+                                                    }
+                                                </div>
+                                            </div>
+
+                                            <!-- Quantity -->
+                                            <div class="col-md-2 text-center">
+                                                <div class="quantity-label">Quantity</div>
+                                                <div class="quantity-value">@item.Count</div>
+                                            </div>
+
+                                            <!-- Item Total -->
+                                            <div class="col-md-2 text-end">
+                                                <div class="total-label">Total</div>
+                                                <div class="total-amount">@item.TotalPrice.ToString("c")</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Shipping Information Section -->
+                        <div class="cart-items-section">
+                            <div class="section-header mb-3">
+                                <h3>Shipping Information</h3>
+                            </div>
+
+                            <div class="shipping-form">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label asp-for="OrderHeader.FirstName" class="form-label">First Name</label>
+                                        <input asp-for="OrderHeader.FirstName" class="form-control" required />
+                                        <span asp-validation-for="OrderHeader.FirstName" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label asp-for="OrderHeader.LastName" class="form-label">Last Name</label>
+                                        <input asp-for="OrderHeader.LastName" class="form-control" required />
+                                        <span asp-validation-for="OrderHeader.LastName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="OrderHeader.PhoneNumber" class="form-label">Phone Number</label>
+                                        <input asp-for="OrderHeader.PhoneNumber" class="form-control" required />
+                                        <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-6">
+                                        <label asp-for="OrderHeader.StreetAddress" class="form-label">Street Address</label>
+                                        <input asp-for="OrderHeader.StreetAddress" class="form-control" required />
+                                        <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label asp-for="OrderHeader.City" class="form-label">City</label>
+                                        <input asp-for="OrderHeader.City" class="form-control" required />
+                                        <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label asp-for="OrderHeader.State" class="form-label">State</label>
+                                        <input asp-for="OrderHeader.State" class="form-control" required />
+                                        <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label asp-for="OrderHeader.PostalCode" class="form-label">Postal Code</label>
+                                        <input asp-for="OrderHeader.PostalCode" class="form-control" required />
+                                        <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: Order Summary Sidebar -->
+                    <div class="col-lg-4">
+                        <div class="cart-summary-card">
+                            <div class="summary-header">
+                                <h3>Order Total</h3>
+                            </div>
+
+                            <div class="summary-content">
+                                <div class="summary-line">
+                                    <span class="summary-label">Subtotal (@Model.CartItems.Count() items)</span>
+                                    <span class="summary-value">@Model.OrderHeader.OrderTotal.ToString("c")</span>
+                                </div>
+                                <div class="summary-line">
+                                    <span class="summary-label">Shipping</span>
+                                    <span class="summary-value"><span class="free-shipping">Free</span></span>
+                                </div>
+                                <div class="summary-line">
+                                    <span class="summary-label">Estimated Arrival</span>
+                                    <span class="summary-value">
+                                        <span class="arrival-date">@minArrivalDate.ToString("MMM dd") - @maxArrivalDate.ToString("MMM dd")</span>
+                                        <small class="arrival-note">2-5 business days</small>
+                                    </span>
+                                </div>
+
+                                <div class="summary-divider"></div>
+                                <div class="summary-total">
+                                    <span class="total-label">Order Total</span>
+                                    <span class="total-value">@Model.OrderHeader.OrderTotal.ToString("c")</span>
+                                </div>
+                            </div>
+
+                            <div class="checkout-section">
+                                <button type="submit" class="btn-checkout">
+                                    <span class="checkout-text">Place Order</span>
+                                    <i class="bi bi-credit-card"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        }
+        else
+        {
+            <div class="empty-cart-container">
+                <div class="empty-cart-content">
+                    <div class="empty-cart-icon">
+                        <i class="bi bi-cart-x"></i>
+                    </div>
+                    <h2 class="empty-cart-title">No items to summarize</h2>
+                    <p class="empty-cart-subtitle">Add some items to your cart first.</p>
+                    
+                    <div class="empty-cart-actions">
+                        <a asp-controller="Home" asp-action="Index" class="btn-start-shopping">
+                            <i class="bi bi-shop"></i>
+                            <span>Start Shopping</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        $(document).ready(function () {
+            // Form validation
+            $('form').on('submit', function (e) {
+                if (!$(this)[0].checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                $(this).addClass('was-validated');
+            });
+
+            // Auto-format postal code
+            $('#OrderHeader_PostalCode').on('input', function () {
+                let value = $(this).val().replace(/\D/g, '');
+                if (value.length >= 5) {
+                    value = value.substring(0, 5);
+                    if (value.length === 5 && /^\d{5}$/.test(value)) {
+                        $(this).val(value);
+                    }
+                }
+            });
+
+            // Real-time form validation feedback
+            $('.form-control').on('blur', function () {
+                if ($(this).val().trim() === '') {
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid').addClass('is-valid');
+                }
+            });
+        });
+    </script>
+}

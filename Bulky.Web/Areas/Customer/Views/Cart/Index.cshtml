@@ -94,14 +94,22 @@
                                         <div class="col-md-3">
                                             <label class="quantity-label">Quantity</label>
                                             <div class="quantity-input-group">
-                                                <a asp-action="Minus" class="quantity-btn quantity-decrease" asp-route-cartId="@item.Id">
-                                                    <i class="bi bi-dash"></i>
-                                                </a>
-                                                <input disabled  asp-for="@item.Count" type="number" class="form-control quantity-input" value="@item.Count" min="1" max="999" data-cart-id="@item.Id">
-                                                <a asp-action="Plus" class="quantity-btn quantity-increase" asp-route-cartId="@item.Id">
-                                                    <i class="bi bi-plus"></i>
-                                                </a>
-                                            </div>
+                                                <form asp-action="Minus" method="post" class="quantity-form">
+                                                    <input type="hidden" name="cartId" value="@item.Id" />
+                                                    <button type="submit" class="quantity-btn quantity-decrease">
+                                                        <i class="bi bi-dash"></i>
+                                                    </button>
+                                                </form>
+                                                
+                                                <span class="quantity-display">@item.Count</span>
+                                                
+                                                <form asp-action="Plus" method="post" class="quantity-form">
+                                                    <input type="hidden" name="cartId" value="@item.Id" />
+                                                    <button type="submit" class="quantity-btn quantity-increase">
+                                                        <i class="bi bi-plus"></i>
+                                                    </button>
+                                                </form>
+                                            </div>  
                                         </div>
 
                                         <!-- Item Total -->
@@ -112,9 +120,12 @@
 
                                         <!-- Remove Action -->
                                         <div class="col-md-1 text-end">
-                                            <a asp-action="Remove" class="btn-remove" asp-route-cartId="@item.Id" title="Remove from cart">
-                                                <i class="bi bi-trash3"></i>
-                                            </a>
+                                            <form asp-action="Remove" method="post">
+                                                <input type="hidden" name="cartId" value="@item.Id" />
+                                                <button type="submit" class="btn-remove" title="Remove from cart">
+                                                    <i class="bi bi-trash3"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
 
@@ -134,7 +145,7 @@
                             <div class="summary-content">
                                 <div class="summary-line">
                                     <span class="summary-label">Subtotal</span>
-                                    <span class="summary-value">@Model.CartItems.Sum(i => i.TotalPrice).ToString("c")</span>
+                                    <span class="summary-value">@Model.OrderHeader.OrderTotal.ToString("c")</span>
                                 </div>
 
                                 <div class="summary-line">
@@ -154,13 +165,13 @@
 
                                 <div class="summary-total">
                                     <span class="total-label">Total</span>
-                                    <span class="total-value">@Model.CartItems.Sum(i => i.TotalPrice).ToString("c")</span>
+                                    <span class="total-value">@Model.OrderHeader.OrderTotal.ToString("c")</span>
                                 </div>
 
                             </div>
 
                             <div class="checkout-section">
-                                <a asp-controller="Checkout" asp-action="Index" class="btn-checkout">
+                                <a asp-controller="Cart" asp-action="Summary" class="btn-checkout">
                                     <span class="checkout-text">Proceed to Checkout</span>
                                     <i class="bi bi-arrow-right"></i>
                                 </a>

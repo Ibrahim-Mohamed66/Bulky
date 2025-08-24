@@ -16,6 +16,8 @@ public class UnitOfWork: IUnitOfWork
         Company = new CompanyRepository(_dbContext);
         Cart = new CartRepository(_dbContext);
         ApplicationUser = new ApplicationUserRepository(_dbContext);
+        OrderHeader = new OrderHeadeRepository(_dbContext);
+        OrderDetail = new OrderDetailRepository(_dbContext);
     }
 
     public ICategoryRepository Category { get; private set; }
@@ -23,6 +25,8 @@ public class UnitOfWork: IUnitOfWork
     public ICompanyRepository Company { get; private set; }
     public ICartRepository Cart { get; private set; }
     public IApplicationUserRepository ApplicationUser { get; private set; }
+    public IOrderHeaderRepository OrderHeader { get; private set; }
+    public IOrderDetailRepository OrderDetail { get; private set; }
 
 
     public async Task SaveChangesAsync()

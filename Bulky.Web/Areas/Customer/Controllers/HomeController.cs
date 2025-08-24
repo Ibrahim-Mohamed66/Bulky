@@ -76,10 +76,12 @@ namespace BulkyWeb.Areas.Customer.Controllers
             {
                 existingCart.Count += ShopingCart.Count;
                 _unitOfWork.Cart.Update(existingCart);
+                TempData["success"] = "Book count updated in cart successfully";
             }
             else
             {
                 await _unitOfWork.Cart.AddAsync(ShopingCart);
+                TempData["success"] = "Book added to cart successfully";
             }
             await _unitOfWork.SaveChangesAsync();
             return RedirectToAction("Index");

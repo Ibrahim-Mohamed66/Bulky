@@ -6,6 +6,7 @@ using Bulky.Utility;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 namespace BulkyWeb
 {
@@ -22,6 +23,7 @@ namespace BulkyWeb
             builder.Services.AddRazorPages();
             var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<BulkyDbContext>(options =>options.UseSqlServer(defaultConnection));
+            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BulkyDbContext>().AddDefaultTokenProviders();
             builder.Services.ConfigureApplicationCookie(options => {
@@ -48,6 +50,7 @@ namespace BulkyWeb
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
             app.MapRazorPages();
             app.MapStaticAssets();
             app.MapControllerRoute(
