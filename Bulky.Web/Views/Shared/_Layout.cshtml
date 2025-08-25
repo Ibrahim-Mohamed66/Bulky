@@ -26,7 +26,10 @@
         <header>
             <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
                 <div class="container-fluid">
-                    <a class="navbar-brand text-uppercase ms-5" asp-area="" asp-controller="Home" asp-action="Index">Bulky</a>
+                    <a class="navbar-brand text-uppercase ms-5 d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                        <span class="me-2">Bulky</span>
+                        <img src="~/images/book.png" alt="Bulky Logo" class="img-fluid" style="height:30px;" />
+                    </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -57,7 +60,9 @@
                                             <a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="Index">Orders</a>
                                         </li>
                                         <li><hr class="dropdown-divider"></li>
-                                        <a class="dropdown-item"  asp-page="/Account/Register" asp-area="Identity">Create Users</a>
+                                        <a class="dropdown-item" asp-page="/Account/Register" asp-area="Identity">Create Users</a>
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Users Management</a>
+
                                     </ul>
                                 </li>
                             }
@@ -102,7 +107,9 @@
 
     </footer>
     <script src="https://cdn.tiny.cloud/1/xs06yttx3dvgderl2p3c6clon7svl4azys56w4e356we1kqe/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+   
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>

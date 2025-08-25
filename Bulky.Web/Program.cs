@@ -1,4 +1,5 @@
 using Bulky.DataAccess.Data;
+using Bulky.DataAccess.Data.DbInitializer;
 using Bulky.DataAccess.Repositories;
 using Bulky.DataAccess.Repositories.IRepositories;
 using Bulky.Models.Models;
@@ -8,76 +9,88 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
 
-namespace BulkyWeb
+namespace BulkyWeb;
+
+public class Program
 {
-    public class Program
+    public static async Task Main(string[] args)
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+
+
+        // Add services to the container.
+        builder.Services.AddControllersWithViews();
+        builder.Services.AddRazorPages();
+        var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+        builder.Services.AddDbContext<BulkyDbContext>(options =>options.UseSqlServer(defaultConnection));
+        builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BulkyDbContext>().AddDefaultTokenProviders();
+        builder.Services.ConfigureApplicationCookie(options => {
+            options.LoginPath = $"/Identity/Account/Login";
+            options.LogoutPath = $"/Identity/Account/Logout";
+            options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+        });
+        builder.Services.AddAuthentication().AddFacebook(options =>
         {
-            var builder = WebApplication.CreateBuilder(args);
+            options.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+            options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+        });
+        builder.Services.AddAuthentication().AddGoogle(options =>
+        {
+            options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+            options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+        });
+
+        builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(100);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
+
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddScoped<IEmailSender, EmailSender>();
+        builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
-            builder.Services.AddRazorPages();
-            var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
-            builder.Services.AddDbContext<BulkyDbContext>(options =>options.UseSqlServer(defaultConnection));
-            builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+        var app = builder.Build();
 
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BulkyDbContext>().AddDefaultTokenProviders();
-            builder.Services.ConfigureApplicationCookie(options => {
-                options.LoginPath = $"/Identity/Account/Login";
-                options.LogoutPath = $"/Identity/Account/Logout";
-                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
-            });
-            builder.Services.AddAuthentication().AddFacebook(options =>
+        // Configure the HTTP request pipeline.
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Home/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseRouting();
+        app.UseSession();
+        app.UseAuthentication();
+        app.UseAuthorization();
+        StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+        app.MapRazorPages();
+        await SeedDatabase();
+        app.MapStaticAssets();
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}")
+            .WithStaticAssets();
+
+        app.Run();
+
+
+        async Task SeedDatabase()
+        {
+            using (var scope = app.Services.CreateScope())
             {
-                options.AppId = builder.Configuration["Authentication:Facebook:AppId"];
-                options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
-            });
-            builder.Services.AddAuthentication().AddGoogle(options =>
-            {
-                options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-            });
-
-            builder.Services.AddDistributedMemoryCache();
-            builder.Services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(100);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
-
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<IEmailSender, EmailSender>();
-
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+                await dbInitializer.Initialize();
             }
-
-            app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseSession();
-            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
-            app.MapRazorPages();
-            app.MapStaticAssets();
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}")
-                .WithStaticAssets();
-
-            app.Run();
         }
     }
 }

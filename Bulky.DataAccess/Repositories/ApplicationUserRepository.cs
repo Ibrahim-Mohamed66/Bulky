@@ -14,7 +14,8 @@ public class ApplicationUserRepository : Repository<ApplicationUser, string>, IA
         _context = context;
     }
 
-
-    
-
+    public void Update(ApplicationUser entity)
+    {
+        _context.Update(entity);
+    }
 }

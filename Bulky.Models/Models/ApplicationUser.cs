@@ -21,6 +21,8 @@ namespace Bulky.Models.Models
         public string? PostalCode { get; set; }
         [Required]
         public DateTime DateOfBirth { get; set; }
+        [NotMapped]
+        public string? Role { get; set; }
         public int? CompanyId { get; set; }
         [ForeignKey("CompanyId")]
         [ValidateNever]

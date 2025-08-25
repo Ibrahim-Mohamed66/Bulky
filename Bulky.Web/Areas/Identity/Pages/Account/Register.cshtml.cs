@@ -130,13 +130,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if(! await _roleManager.RoleExistsAsync(StaticData.Role_Customer))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(StaticData.Role_Customer));
-                await _roleManager.CreateAsync(new IdentityRole(StaticData.Role_Admin));
-                await _roleManager.CreateAsync(new IdentityRole(StaticData.Role_Employee));
-                await _roleManager.CreateAsync(new IdentityRole(StaticData.Role_Company));
-            }
+           
             Input = new InputModel
             {
                 RoleList = _roleManager.Roles.Select(r => r.Name).Select(r => new SelectListItem

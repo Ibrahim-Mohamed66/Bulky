@@ -1,0 +1,56 @@
+﻿@model RoleManagementVM
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Manage User Roles</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post">
+            <input asp-for="ApplicationUser.Id" hidden />
+            <div class="border p-3 mt-4">
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="ApplicationUser.FullName" readonly class="form-control border-0 shadow" />
+                    <label asp-for="ApplicationUser.FullName" class="ms-2"></label>
+                    <span asp-validation-for="ApplicationUser.FullName" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating py-2 col-12 @(Model.ApplicationUser.Role == StaticData.Role_Company ? "" : "d-none")" id="company-container">
+                    <select asp-for="ApplicationUser.CompanyId" asp-items="@Model.Companies" class="form-select"></select>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <select id="role" asp-for="ApplicationUser.Role" asp-items="@Model.Roles" class="form-select"></select>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary form-control">Update Role</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="User" asp-action="Index" class="btn btn-secondary border form-control">
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#role').change(function () {
+                if ($(this).val() === 'Company') {
+                    $('#company-container').removeClass('d-none');
+                } else {
+                    $('#company-container').addClass('d-none');
+                }
+            });
+        });
+    </script>
+}
