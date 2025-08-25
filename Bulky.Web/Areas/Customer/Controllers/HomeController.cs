@@ -1,6 +1,7 @@
 using Bulky.DataAccess.Repositories.IRepositories;
 using Bulky.Models.Models;
 using Bulky.Models.ViewModels;
+using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -21,10 +22,18 @@ namespace BulkyWeb.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 12)
         {
-            if(pageSize <= 0) pageSize = 10;
-            if(page <= 1) page = 1; 
+            var claims = (ClaimsIdentity)User.Identity;
+            var userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if(userId != null)
+            {
+                HttpContext.Session.SetInt32(StaticData.SessionCart,
+                    (await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == userId)).Count());
+            }
+
+            if (pageSize <= 0) pageSize = 12;
+            if(page <= 1) page = 1;
             var totalProducts = await _unitOfWork.Product.GetCountAsync(p => p.IsHidden == false);
 
             var totalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
@@ -50,6 +59,13 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public async Task<IActionResult> Details(int productId)
         {
+            var claims = (ClaimsIdentity)User.Identity;
+            var userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId != null)
+            {
+                HttpContext.Session.SetInt32(StaticData.SessionCart,
+                    (await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == userId)).Count());
+            }
             var products = await _unitOfWork.Product.GetByIdAsync(productId, includes: p => p.Category);
             var cart = new Cart
             {
@@ -71,6 +87,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
         {
             var claims = (ClaimsIdentity)User.Identity;
             var userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
             ShopingCart.ApplicationUserId = userId;
 
             var existingCart = await _unitOfWork.Cart.FilterAsync(
@@ -84,81 +101,15 @@ namespace BulkyWeb.Areas.Customer.Controllers
             else
             {
                 await _unitOfWork.Cart.AddAsync(ShopingCart);
+                HttpContext.Session.SetInt32(StaticData.SessionCart,
+                    (await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == userId)).Count());
                 TempData["success"] = "Book added to cart successfully";
             }
             await _unitOfWork.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", new { productId = ShopingCart.ProductId });
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> AddToCart(int productId, int count)
-        {
-            try
-            {
-                var claims = (ClaimsIdentity)User.Identity;
-                var userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                
-                // Get product to validate and for response
-                var product = await _unitOfWork.Product.GetByIdAsync(productId);
-                if (product == null)
-                {
-                    return Json(new { success = false, message = "Product not found" });
-                }
-                
-                var existingCart = await _unitOfWork.Cart.FilterAsync(
-                    c => c.ApplicationUserId == userId && c.ProductId == productId);
-                    
-                if (existingCart != null)
-                {
-                    existingCart.Count += count;
-                    _unitOfWork.Cart.Update(existingCart);
-                }
-                else
-                {
-                    var newCartItem = new Cart
-                    {
-                        ProductId = productId,
-                        ApplicationUserId = userId,
-                        Count = count
-                    };
-                    await _unitOfWork.Cart.AddAsync(newCartItem);
-                }
-                
-                await _unitOfWork.SaveChangesAsync();
-                
-                // Get updated cart count
-                var cartItems = await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == userId);
-                var cartCount = cartItems.Sum(c => c.Count);
-                
-                return Json(new { 
-                    success = true, 
-                    message = $"{product.Title} added to cart successfully!",
-                    productTitle = product.Title,
-                    cartCount = cartCount 
-                });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = "An error occurred while adding to cart" });
-            }
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetCartCount()
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return Json(new { count = 0 });
-            }
-
-            var claims = (ClaimsIdentity)User.Identity;
-            var userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var cartItems = await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == userId);
-            var count = cartItems.Sum(c => c.Count);
-            return Json(new { count = count });
-        }
-
+        
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> OrderHistory()
@@ -182,16 +133,65 @@ namespace BulkyWeb.Areas.Customer.Controllers
             return View(orderVm);
         }
 
-
-        public IActionResult Privacy()
+        #region API_Calls
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> AddToCart(int productId, int count)
         {
-            return View();
-        }
+            try
+            {
+                var claims = (ClaimsIdentity)User.Identity;
+                var userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                // Get product to validate and for response
+                var product = await _unitOfWork.Product.GetByIdAsync(productId);
+                if (product == null)
+                {
+                    return Json(new { success = false, message = "Product not found" });
+                }
+
+                var existingCart = await _unitOfWork.Cart.FilterAsync(
+                    c => c.ApplicationUserId == userId && c.ProductId == productId);
+
+                if (existingCart != null)
+                {
+                    existingCart.Count += count;
+                    _unitOfWork.Cart.Update(existingCart);
+                }
+                else
+                {
+                    var newCartItem = new Cart
+                    {
+                        ProductId = productId,
+                        ApplicationUserId = userId,
+                        Count = count
+                    };
+                    await _unitOfWork.Cart.AddAsync(newCartItem);
+                }
+
+                await _unitOfWork.SaveChangesAsync();
+                HttpContext.Session.SetInt32(StaticData.SessionCart,
+                    (await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == userId)).Count());
+
+                var cartItems = await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == userId);
+                var cartCount = cartItems.Count();
+
+                HttpContext.Session.SetInt32(StaticData.SessionCart, cartCount);
+
+                return Json(new
+                {
+                    success = true,
+                    message = $"{product.Title} added to cart successfully!",
+                    productTitle = product.Title,
+                    count = cartCount
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while adding to cart" });
+            }
         }
-    }
+    } 
+    #endregion
 }

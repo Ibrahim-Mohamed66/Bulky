@@ -41,13 +41,45 @@
     <h4>Add another service to log in.</h4>
     <hr />
     <form id="link-login-form" asp-page-handler="LinkLogin" method="post" class="form-horizontal">
-        <div id="socialLoginList">
-            <p>
-                @foreach (var provider in Model.OtherLogins)
-                {
-                    <button id="@($"link-login-button-{provider.Name}")" type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+        <div id="socialLoginList" class="external-login-container">
+            @foreach (var provider in Model.OtherLogins)
+            {
+                
+                    string btnClass = "external-login-btn";
+                    string icon = "fas fa-user";
+                    
+                    switch (provider.Name.ToLower())
+                    {
+                        case "google":
+                            btnClass += " btn-google";
+                            icon = "fab fa-google";
+                            break;
+                        case "facebook":
+                            btnClass += " btn-facebook";
+                            icon = "fab fa-facebook-f";
+                            break;
+                        case "microsoft":
+                            btnClass += " btn-microsoft";
+                            icon = "fab fa-microsoft";
+                            break;
+                        case "github":
+                            btnClass += " btn-github";
+                            icon = "fab fa-github";
+                            break;
+                        case "twitter":
+                            btnClass += " btn-twitter";
+                            icon = "fab fa-twitter";
+                            break;
+                        default:
+                            btnClass += " btn-outline-primary";
+                            break;
+                    
                 }
-            </p>
+                <button id="@($"link-login-button-{provider.Name}")" type="submit" class="@btnClass" name="provider" value="@provider.Name" title="Link your @provider.DisplayName account">
+                    <i class="@icon"></i>
+                    <span>@provider.DisplayName</span>
+                </button>
+            }
         </div>
     </form>
 }

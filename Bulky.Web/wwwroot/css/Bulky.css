@@ -778,10 +778,11 @@
     color: #192E2F;
 }
 
-.action-buttons {
+.purchase-section .action-buttons {
     display: flex;
     gap: 1rem;
     margin-top: 1.5rem;
+    flex-direction:row;
 }
 
 .add-to-cart-btn {
@@ -943,7 +944,7 @@
     }
     
     .action-buttons {
-        flex-direction: column;
+        flex-direction: column !important;
     }
     
     .total-price {
@@ -998,7 +999,6 @@
 	min-height: 100vh;
 	display: flex;
 	align-items: center;
-	margin: -3rem 0 -3rem 0; /* Compensate for main container padding */
 	padding: 3rem 0;
 }
 
@@ -1006,6 +1006,26 @@
 
 .auth-hero {
 	padding: 2rem 1rem 2rem 0;
+}
+
+.auth-hero .brand-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.auth-hero .text-gradient {
+    background: linear-gradient(45deg, #BD7418, #C07b24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.auth-hero .lead {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
 }
 
 /* Status pages */
@@ -1059,6 +1079,546 @@
     border-radius: 1rem;
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.auth-card .card-body {
+    padding: 3rem !important;
+}
+
+.auth-card h2 {
+    color: #192E2F;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.auth-card .text-muted {
+    color: #6c757d !important;
+    margin-bottom: 2rem;
+}
+
+/* Modern Form Floating Styles */
+.auth-card .form-floating {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.auth-card .form-floating > .form-control,
+.auth-card .form-floating > .form-select {
+    border: none;
+    border-bottom: 2px solid #e9ecef;
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 1.5rem 1rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    background: #f8f9fa;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+    position: relative;
+}
+
+.auth-card .form-floating > .form-control::before,
+.auth-card .form-floating > .form-select::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(45deg, #192E2F, #425F4B);
+    transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.auth-card .form-floating > .form-control:focus,
+.auth-card .form-floating > .form-select:focus {
+    border-bottom-color: #192E2F;
+    background: white;
+    box-shadow: 0 4px 20px rgba(25, 46, 47, 0.1);
+    outline: none;
+    transform: translateY(-2px);
+}
+
+.auth-card .form-floating > .form-control:focus::before,
+.auth-card .form-floating > .form-select:focus::before {
+    transform: scaleX(1);
+}
+
+.auth-card .form-floating > label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    padding: 1.5rem 1rem 0.75rem;
+    overflow: hidden;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+    border: none;
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    transform-origin: 0 0;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #6c757d;
+    font-size: 1rem;
+    font-weight: 400;
+    z-index: 2;
+}
+
+.auth-card .form-floating > .form-control:focus ~ label,
+.auth-card .form-floating > .form-control:not(:placeholder-shown) ~ label,
+.auth-card .form-floating > .form-select ~ label {
+    opacity: 1;
+    transform: scale(0.75) translateY(-0.5rem) translateX(0.15rem);
+    color: #192E2F;
+    font-weight: 600;
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    padding: 0.25rem 0.5rem;
+    width: auto;
+    height: auto;
+}
+
+.auth-card .form-floating > .form-control::placeholder,
+.auth-card .form-floating > .form-select::placeholder {
+    color: transparent;
+}
+
+/* Auto-fill styling to prevent white backgrounds */
+.auth-card .form-floating > .form-control:-webkit-autofill ~ label,
+.auth-card .form-floating > .form-control:-webkit-autofill:hover ~ label,
+.auth-card .form-floating > .form-control:-webkit-autofill:focus ~ label,
+.auth-card .form-floating > .form-control:-webkit-autofill:active ~ label {
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    opacity: 1;
+    transform: scale(0.75) translateY(-0.5rem) translateX(0.15rem);
+    color: #192E2F;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    width: auto;
+    height: auto;
+}
+
+.auth-card .form-floating > .form-control:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #f8f9fa inset !important;
+    -webkit-text-fill-color: #192E2F !important;
+    border-bottom-color: #192E2F !important;
+}
+
+.auth-card .form-floating > .form-control:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    -webkit-text-fill-color: #192E2F !important;
+}
+
+/* Universal label background override */
+.auth-card .form-floating label,
+.auth-card .form-floating > label,
+.auth-card label.form-label {
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+/* Modern Date Input Styling */
+.auth-card .form-floating > input[type="date"] {
+    color: #6c757d;
+    background: #f8f9fa;
+    cursor: pointer;
+}
+
+.auth-card .form-floating > input[type="date"]:focus {
+    color: #192E2F;
+    background: white;
+}
+
+.auth-card .form-floating > input[type="date"]::-webkit-calendar-picker-indicator {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%23192E2F' d='M8 0a.5.5 0 0 1 .5.5V1h4.5a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h4.5V.5A.5.5 0 0 1 8 0zM3.5 2.5A.5.5 0 0 0 3 3v10a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5h-9z'/%3e%3c/svg%3e");
+    background-size: 1rem;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+/* Modern Select Dropdown Styling */
+.auth-card .form-floating > .form-select {
+    color: #6c757d;
+    background: #f8f9fa;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23192E2F' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 16px 12px;
+    cursor: pointer;
+    appearance: none;
+}
+
+.auth-card .form-floating > .form-select:focus {
+    color: #192E2F;
+    background: white;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23192E2F' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+}
+
+.auth-card .form-floating > .form-select option {
+    color: #192E2F;
+    background: white;
+    padding: 0.5rem;
+}
+
+/* Modern Button Styling */
+.auth-card .btn-primary {
+    background: linear-gradient(45deg, #192E2F, #425F4B);
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(25, 46, 47, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-card .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.auth-card .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(25, 46, 47, 0.4);
+    background: linear-gradient(45deg, #425F4B, #192E2F);
+}
+
+.auth-card .btn-primary:hover::before {
+    left: 100%;
+}
+
+.auth-card .btn-primary:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(25, 46, 47, 0.3);
+}
+
+.auth-card .btn-primary:focus {
+    box-shadow: 0 0 0 0.25rem rgba(25, 46, 47, 0.25);
+}
+
+/* Validation Styles */
+.auth-card .text-danger {
+    color: #dc3545 !important;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.auth-card .form-floating .text-danger {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.25rem;
+    z-index: 10;
+}
+
+.auth-card .form-floating > .form-control.is-invalid,
+.auth-card .form-floating > .form-select.is-invalid {
+    border-color: #dc3545;
+    background: #fff5f5;
+}
+
+.auth-card .form-floating > .form-control.is-invalid:focus,
+.auth-card .form-floating > .form-select.is-invalid:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.15);
+}
+
+/* Auth Card Alert Styling */
+.auth-card .alert {
+    border-radius: 0.75rem;
+    border: none;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.auth-card .alert-info {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    color: #1565c0;
+    border-left: 4px solid #2196f3;
+}
+
+.auth-card .alert i {
+    color: #2196f3;
+}
+
+/* Link Styling */
+.auth-card a {
+    color: #192E2F;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.auth-card a:hover {
+    color: #BD7418;
+    text-decoration: underline;
+}
+
+/* External Login Buttons */
+.external-login-btn {
+    border: none !important;
+    border-radius: 0.75rem !important;
+    padding: 0.875rem 1.5rem !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    text-transform: none !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.75rem !important;
+    min-width: 160px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    text-decoration: none !important;
+}
+
+.external-login-btn:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+    z-index: 0;
+}
+
+.external-login-btn:hover:before {
+    left: 100%;
+}
+
+.external-login-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    text-decoration: none !important;
+}
+
+.external-login-btn:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.external-login-btn:focus {
+    outline: none !important;
+    text-decoration: none !important;
+}
+
+.external-login-btn i {
+    font-size: 1.1rem;
+    z-index: 1;
+    position: relative;
+}
+
+.external-login-btn span {
+    z-index: 1;
+    position: relative;
+}
+
+/* Google Login Button */
+.btn-google {
+    background: #fff !important;
+    color: #757575 !important;
+    border: 1px solid #dadce0 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.btn-google:hover {
+    background: #f8f9fa !important;
+    color: #3c4043 !important;
+    border-color: #dadce0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-google:focus {
+    background: #f8f9fa !important;
+    color: #3c4043 !important;
+    border-color: #4285f4 !important;
+    box-shadow: 0 0 0 0.2rem rgba(66, 133, 244, 0.25) !important;
+}
+
+.btn-google:active {
+    background: #f1f3f4 !important;
+    color: #3c4043 !important;
+    border-color: #dadce0 !important;
+}
+
+/* Facebook Login Button */
+.btn-facebook {
+    background: linear-gradient(135deg, #1877f2 0%, #42a5f5 100%) !important;
+    color: white !important;
+}
+
+.btn-facebook:hover {
+    background: linear-gradient(135deg, #166fe5 0%, #1e88e5 100%) !important;
+    color: white !important;
+}
+
+.btn-facebook:focus {
+    background: linear-gradient(135deg, #166fe5 0%, #1e88e5 100%) !important;
+    color: white !important;
+    box-shadow: 0 0 0 0.2rem rgba(24, 119, 242, 0.25) !important;
+}
+
+/* Microsoft Login Button */
+.btn-microsoft {
+    background: linear-gradient(135deg, #00a4ef 0%, #0078d4 100%) !important;
+    color: white !important;
+}
+
+.btn-microsoft:hover {
+    background: linear-gradient(135deg, #0090d4 0%, #106ebe 100%) !important;
+    color: white !important;
+}
+
+.btn-microsoft:focus {
+    background: linear-gradient(135deg, #0090d4 0%, #106ebe 100%) !important;
+    color: white !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 120, 212, 0.25) !important;
+}
+
+/* GitHub Login Button */
+.btn-github {
+    background: linear-gradient(135deg, #333 0%, #24292e 100%) !important;
+    color: white !important;
+}
+
+.btn-github:hover {
+    background: linear-gradient(135deg, #2c2c2c 0%, #1b1f23 100%) !important;
+    color: white !important;
+}
+
+.btn-github:focus {
+    background: linear-gradient(135deg, #2c2c2c 0%, #1b1f23 100%) !important;
+    color: white !important;
+    box-shadow: 0 0 0 0.2rem rgba(51, 51, 51, 0.25) !important;
+}
+
+/* Twitter/X Login Button */
+.btn-twitter {
+    background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%) !important;
+    color: white !important;
+}
+
+.btn-twitter:hover {
+    background: linear-gradient(135deg, #1a91da 0%, #0c7abc 100%) !important;
+    color: white !important;
+}
+
+.btn-twitter:focus {
+    background: linear-gradient(135deg, #1a91da 0%, #0c7abc 100%) !important;
+    color: white !important;
+    box-shadow: 0 0 0 0.2rem rgba(29, 161, 242, 0.25) !important;
+}
+
+/* External Login Container */
+.external-login-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+/* External Login Section Styling */
+.external-login-section {
+    position: relative;
+    margin-top: 1.5rem;
+}
+
+.external-login-section hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e9ecef, transparent);
+    margin: 1.5rem 0;
+}
+
+.external-login-section .text-muted {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #6c757d !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .external-login-btn {
+        width: 100% !important;
+        min-width: auto !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .external-login-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .external-login-btn {
+        padding: 1rem 1.5rem !important;
+        font-size: 1rem !important;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+    .external-login-btn {
+        min-width: 140px !important;
+        padding: 0.8rem 1.25rem !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Company Field Animation */
+#company {
+    transition: all 0.3s ease;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+#company:not(.d-none) {
+    opacity: 1;
+    max-height: 100px;
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .auth-card .card-body {
+        padding: 2rem !important;
+    }
+    
+    .auth-card .form-floating {
+        margin-bottom: 1.25rem;
+    }
+    
+    .auth-hero {
+        text-align: center;
+        padding: 1rem 0 2rem;
+    }
 }
 
 .auth-benefits {
@@ -1770,45 +2330,7 @@
     color: #192E2F;
 }
 
-.promo-section {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #f1f3f4;
-}
 
-.promo-input-group {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.promo-input {
-    flex: 1;
-    padding: 0.75rem;
-    border: 2px solid #e9ecef;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    transition: border-color 0.3s ease;
-}
-
-.promo-input:focus {
-    outline: none;
-    border-color: #425F4B;
-}
-
-.promo-apply-btn {
-    padding: 0.75rem 1.5rem;
-    background: #425F4B;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.promo-apply-btn:hover {
-    background: #192E2F;
-    transform: translateY(-2px);
-}
 
 .checkout-section {
     padding: 1.5rem;
@@ -2240,53 +2762,216 @@
 
 
 /* Shipping Form Styles */
+/* Modern Shipping Form Styles */
 .shipping-form {
-    padding: 1.5rem 0;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+}
+
+.shipping-form .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.shipping-form .col,
+.shipping-form .col-md-6,
+.shipping-form .col-md-4,
+.shipping-form .col-md-12 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.shipping-form .form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+    width: 100%;
 }
 
 .shipping-form .form-label {
     font-weight: 600;
     color: #192E2F;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
     font-size: 0.95rem;
+    display: block;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
 }
 
 .shipping-form .form-control {
-    border-radius: 10px;
-    border: 2px solid #e9ecef;
-    padding: 0.75rem 1rem;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
+    border: none;
+    border-bottom: 2px solid #e9ecef;
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1rem;
+    background: #f8f9fa;
+    box-shadow: none;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.shipping-form .form-control::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(45deg, #192E2F, #425F4B);
+    transform: scaleX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .shipping-form .form-control:focus {
-    border-color: #425F4B;
-    box-shadow: 0 0 0 0.2rem rgba(66, 95, 75, 0.25);
+    border-bottom-color: #192E2F;
+    background: white;
+    box-shadow: 0 4px 20px rgba(25, 46, 47, 0.1);
     outline: none;
+    transform: translateY(-2px);
+}
+
+.shipping-form .form-control:focus + .form-label {
+    color: #192E2F;
+    transform: translateY(-2px);
 }
 
 .shipping-form .form-control.is-valid {
-    border-color: #28a745;
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    border-bottom-color: #28a745;
+    background: #f8fff9;
 }
 
 .shipping-form .form-control.is-invalid {
-    border-color: #dc3545;
-    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    border-bottom-color: #dc3545;
+    background: #fff5f5;
 }
 
-/* Quantity and Total Display */
+.shipping-form .form-control.is-invalid:focus {
+    box-shadow: 0 4px 20px rgba(220, 53, 69, 0.1);
+}
+
+/* Ensure consistent column heights */
+.shipping-form .row.g-3 {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+}
+
+.shipping-form .row.g-3 > * {
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    margin-top: var(--bs-gutter-y);
+}
+
+/* Modern Quantity and Total Display */
 .quantity-label, .total-label {
     font-size: 0.9rem;
-    color: #6c757d;
+    color: #192E2F;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .quantity-value, .total-amount {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: #192E2F;
+    background: linear-gradient(45deg, #192E2F, #425F4B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Modern Shipping Section Styling */
+.shipping-section {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(25, 46, 47, 0.1);
+}
+
+.shipping-section .section-title {
+    color: #192E2F;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.shipping-section .section-title i {
+    color: #BD7418;
+    font-size: 1.2rem;
+}
+
+/* Modern Form Actions */
+.shipping-form .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #f8f9fa;
+}
+
+.shipping-form .btn-modern {
+    background: linear-gradient(45deg, #192E2F, #425F4B);
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(25, 46, 47, 0.3);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.shipping-form .btn-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.shipping-form .btn-modern:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(25, 46, 47, 0.4);
+    background: linear-gradient(45deg, #425F4B, #192E2F);
+    color: white;
+}
+
+.shipping-form .btn-modern:hover::before {
+    left: 100%;
+}
+
+.shipping-form .btn-secondary {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 0.75rem;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    color: #6c757d;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shipping-form .btn-secondary:hover {
+    background: #f8f9fa;
+    border-color: #192E2F;
+    color: #192E2F;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(25, 46, 47, 0.1);
 }
 
 /* Summary Item Count Badge */
@@ -2375,8 +3060,57 @@
         align-self: center;
     }
     
+    .shipping-form {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .shipping-section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .shipping-form .form-group {
+        margin-bottom: 1.25rem;
+        width: 100%;
+    }
+    
+    .shipping-form .col,
+    .shipping-form .col-md-6,
+    .shipping-form .col-md-4,
+    .shipping-form .col-md-12 {
+        padding-left: 0;
+        padding-right: 0;
+        margin-bottom: 0.75rem;
+    }
+    
+    .shipping-form .form-control {
+        width: 100%;
+        margin-bottom: 0;
+    }
+    
+    .shipping-form .form-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+    }
+    
+    .shipping-form .btn-modern,
+    .shipping-form .btn-secondary {
+        width: 100%;
+        padding: 0.875rem 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .shipping-form .row.g-3 {
+        --bs-gutter-x: 0;
+        --bs-gutter-y: 0.75rem;
+    }
+    
     .shipping-form .row.g-3 > div {
-        margin-bottom: 1rem;
+        margin-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
     }
     
     .empty-cart-icon {
@@ -2953,7 +3687,6 @@ address {
     font-size: 1.3rem;
     font-weight: 700;
     color: #BD7418;
-    background: rgba(255, 255, 255, 0.1);
     padding: 0.5rem 1rem;
     border-radius: 50px;
 }

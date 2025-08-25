@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Bulky.Models.Models;
+using Bulky.Utility;
 
 namespace BulkyWeb.Areas.Identity.Pages.Account
 {
@@ -85,6 +86,19 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+            [Required]
+            public string FirstName { get; set; }
+            [Required]
+            public string LastName { get; set; }
+
+            public string? StreetAddress { get; set; }
+            public string? City { get; set; }
+            public string? State { get; set; }
+            public string? PostalCode { get; set; }
+            [Required]
+            public DateTime DateOfBirth { get; set; }
+            [Required]
+            public string PhoneNumber { get; set; }
         }
         
         public IActionResult OnGet() => RedirectToPage("./Login");
@@ -132,7 +146,9 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                 {
                     Input = new InputModel
                     {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                        FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName),
+                        LastName = info.Principal.FindFirstValue(ClaimTypes.Surname),
                     };
                 }
                 return Page();
@@ -152,10 +168,21 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.StreetAddress = Input.StreetAddress;
+                user.City = Input.City;
+                user.State = Input.State;
+                user.PostalCode = Input.PostalCode;
+                user.DateOfBirth = Input.DateOfBirth;
+                user.PhoneNumber = Input.PhoneNumber;
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+
+
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -163,6 +190,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
+                        await _userManager.AddToRoleAsync(user, StaticData.Role_Customer);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
                         var userId = await _userManager.GetUserIdAsync(user);

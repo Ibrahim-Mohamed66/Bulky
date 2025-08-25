@@ -225,6 +225,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             cartItem.Count++;
             _unitOfWork.Cart.Update(cartItem);
             await _unitOfWork.SaveChangesAsync();
+            HttpContext.Session.SetInt32(StaticData.SessionCart,
+                (await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == cartItem.ApplicationUserId)).Count());
             TempData["success"] = "Cart updated successfully";
             return RedirectToAction("Index");
 
@@ -240,6 +242,9 @@ namespace BulkyWeb.Areas.Customer.Controllers
             {
                 await _unitOfWork.Cart.RemoveAsync(cartId);
                 await _unitOfWork.SaveChangesAsync();
+                HttpContext.Session.SetInt32(StaticData.SessionCart,
+                    (await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == cartItem.ApplicationUserId)).Count());
+
                 TempData["success"] = "Item removed from cart";
 
                 return RedirectToAction("Index");
@@ -262,6 +267,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             var userId = cartItem.ApplicationUserId;
             await _unitOfWork.Cart.RemoveAsync(cartId);
             await _unitOfWork.SaveChangesAsync();
+            HttpContext.Session.SetInt32(StaticData.SessionCart,
+                (await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == userId)).Count());
             TempData["success"] = "Item removed from cart";
 
             return RedirectToAction("Index");

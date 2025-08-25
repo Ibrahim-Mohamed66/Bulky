@@ -51,7 +51,7 @@
                                                 <img src="@item.Product.ImageUrl" class="img-fluid product-image" alt="@item.Product.Title">
                                                 <div class="image-overlay">
                                                     <button class="btn-quick-view" title="Quick View">
-                                                        <i class="bi bi-eye"></i>
+                                                        <a asp-controller="Home" asp-action="Details" asp-route-productId="@item.ProductId"><i class="bi bi-eye"></i></a>
                                                     </button>
                                                 </div>
                                             </div>

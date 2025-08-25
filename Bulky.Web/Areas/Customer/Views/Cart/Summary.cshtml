@@ -48,7 +48,8 @@
                                         <div class="row align-items-center">
                                             <!-- Product Image -->
                                             <div class="col-md-2">
-                                                <img src="@item.Product.ImageUrl" class="img-fluid product-image" alt="@item.Product.Title">
+                                                    <img src="@item.Product.ImageUrl" class="img-fluid product-image" alt="@item.Product.Title">
+
                                             </div>
 
                                             <!-- Product Details -->
@@ -79,7 +80,7 @@
                                                 <div class="quantity-value">@item.Count</div>
                                             </div>
 
-                                            <!-- Item Total -->
+                                            <!-- Item Total --> 
                                             <div class="col-md-2 text-end">
                                                 <div class="total-label">Total</div>
                                                 <div class="total-amount">@item.TotalPrice.ToString("c")</div>

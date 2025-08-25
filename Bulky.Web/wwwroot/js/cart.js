@@ -3,7 +3,9 @@ $(document).ready(function () {
     $("body").append(
       '<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index:9999;"></div>'
     );
-  }
+    }
+   
+
 
   const csrfToken = $('input[name="__RequestVerificationToken"]').val();
 
@@ -56,9 +58,14 @@ $(document).ready(function () {
       },
       success: function (response) {
         if (response.success) {
-          $(".cart-counter").text(response.cartCount);
+            if (response.count === 0) {
+                $(".cart-counter").text(response.count);
+                $(".cart-counter").hide();
+            } else {
+                $(".cart-counter").text(response.count);
+                $(".cart-counter").show();
+            }
           showToast(response.message, "success");
-          $.cartCounter(response.cartCount);
         } else {
           showToast(response.message, "error");
         }

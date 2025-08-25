@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,57 +21,73 @@
 
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
-            <div class="container-fluid">
-                <a class="navbar-brand text-uppercase ms-5" asp-area="" asp-controller="Home" asp-action="Index">Bulky</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav me-auto d-none d-lg-flex">
-                        <li class="nav-item">
-                            <a class="nav-link p-2 p-lg-3 " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        @if (User.IsInRole(StaticData.Role_Employee))
-                        {
+    @if (ViewData["HideNav"] == null || !(bool)ViewData["HideNav"])
+    {
+        <header>
+            <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+                <div class="container-fluid">
+                    <a class="navbar-brand text-uppercase ms-5" asp-area="" asp-controller="Home" asp-action="Index">Bulky</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav me-auto d-none d-lg-flex">
                             <li class="nav-item">
-                                <a class="nav-link p-2 p-lg-3 " asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Company Orders</a>
+                                <a class="nav-link p-2 p-lg-3 " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
-                        }
-                        @if (User.IsInRole(StaticData.Role_Admin))
-                        {
+                            @if (User.IsInRole(StaticData.Role_Employee))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link p-2 p-lg-3 " asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Company Orders</a>
+                                </li>
+                            }
+                            @if (User.IsInRole(StaticData.Role_Admin))
+                            {
 
-                            <li class="nav-item dropdown">
-                                <a class="nav-link  p-2 p-lg-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Admin Dashboard
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
-                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products</a>
-                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Companies</a>
-                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="Index">Orders</a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                </ul>
-                            </li>
-                        }
-                    </ul>
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item me-3">
-                            <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                <i class="bi bi-cart3"></i>
-                                <span class="cart-counter badge bg-danger rounded-pill ms-1" style="display: none;">0</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link  p-2 p-lg-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Admin Dashboard
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products</a>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Companies</a>
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="Index">Orders</a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                        <ul class="navbar-nav ms-auto">
+                            @if (HttpContextAccessor.HttpContext.Session.GetInt32(StaticData.SessionCart) != null)
+                            {
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                        @await Component.InvokeAsync("Cart")
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item me-3">
+                                    <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                        <i class="bi bi-cart3"></i>
+                                        <span class="cart-counter badge bg-danger rounded-pill  ms-1">0</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
+    }
+
+    
 
     <main role="main" class="pb-3 mb-5">
         <partial name="_NotificationsPartial" />
