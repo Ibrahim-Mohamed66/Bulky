@@ -46,12 +46,11 @@ public class Product : EntityBase
     [Display(Name = "Price for 100+")]
     public double Price100 { get; set; }
 
-    [ValidateNever]
-    public string ImageUrl { get; set; }
-
     public int CategoryId { get; set; }
     [ForeignKey("CategoryId")]
     [ValidateNever]
     public Category? Category { get; set; }
+    [ValidateNever]
+    public IEnumerable<ProductImage> ProductImages { get; set; }
 
 }

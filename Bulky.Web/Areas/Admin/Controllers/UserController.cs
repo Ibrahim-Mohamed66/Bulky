@@ -74,26 +74,36 @@ public class UserController : Controller
         var oldRoles = await _userManager.GetRolesAsync(user);
         var oldRole = oldRoles.FirstOrDefault();
 
+        // --- Handle CompanyId update regardless of role change ---
+        if (roleManagementVm.ApplicationUser.Role == StaticData.Role_Company)
+        {
+            // Always update CompanyId if role is Company
+            user.CompanyId = roleManagementVm.ApplicationUser.CompanyId;
+        }
+        else if (oldRole == StaticData.Role_Company)
+        {
+            // If moving away from Company role, clear CompanyId
+            user.CompanyId = null;
+        }
+
+        // --- Handle Role change ---
         if (roleManagementVm.ApplicationUser.Role != oldRole)
         {
-            if (roleManagementVm.ApplicationUser.Role == StaticData.Role_Company)
-            {
-                user.CompanyId = roleManagementVm.ApplicationUser.CompanyId;
-            }
-            if (oldRole == StaticData.Role_Company)
-            {
-                user.CompanyId = null;
-            }
-
-            await _userManager.UpdateAsync(user);
             await _userManager.RemoveFromRoleAsync(user, oldRole);
             await _userManager.AddToRoleAsync(user, roleManagementVm.ApplicationUser.Role);
-
-            TempData["success"] = "User Updated Successfully";
+            TempData["success"] = "User role updated successfully";
         }
+        else
+        {
+            TempData["success"] = "User company updated successfully";
+        }
+
+        _unitOfWork.ApplicationUser.Update(user);
+        await _unitOfWork.SaveChangesAsync();
 
         return RedirectToAction("Index");
     }
+
 
 
 

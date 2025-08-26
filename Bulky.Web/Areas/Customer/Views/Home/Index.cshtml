@@ -134,7 +134,14 @@
                         <a asp-action="Details" asp-area="Customer" asp-route-productId="@product.Id" class="card-link-overlay" title="View @product.Title Details"></a>
                         
                         <div class="position-relative overflow-hidden">
-                            <img src="@product.ImageUrl" class="card-img-top product-image" alt="@product.Title" />
+                            @if(product.ProductImages != null && product.ProductImages.Count() > 0)
+                            {
+                                 <img src="@product.ProductImages.FirstOrDefault().ImageUrl" class="card-img-top product-image" alt="@product.Title" /> 
+                            }
+                            else
+                            {
+                                <img src="https://placehold.jp/500x600.png" class="card-img-top product-image" alt="No Image Available">
+                            }
                             <div class="price-badge">
                                 @((((product.ListPrice - product.Price100) / product.ListPrice) * 100).ToString("F0"))% OFF
                             </div>

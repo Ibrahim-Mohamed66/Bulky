@@ -28,7 +28,11 @@ namespace BulkyWeb.Areas.Customer.Controllers
             var id = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             var cartItems = await _unitOfWork.Cart.GetAllAsync(
                 filter: c => c.ApplicationUserId == id,
-                includes: c => c.Product);
+                pageNumber: 0,
+                pageSize: 0,
+                orderBy: c => c.OrderByDescending(c => c.Id),
+                c => c.Product,
+                c => c.Product.ProductImages);
 
             var cartVM = new CartVM
             {
@@ -48,7 +52,9 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
             var cartItems = await _unitOfWork.Cart.GetAllAsync(
                 filter: c => c.ApplicationUserId == id,
-                includes: c => c.Product);
+                0,0,null,
+                 c => c.Product,
+                 c=>c.Product.ProductImages);
 
             var cartVM = new CartVM
             {
@@ -188,7 +194,11 @@ namespace BulkyWeb.Areas.Customer.Controllers
             // Get order details to display in confirmation
             var orderDetails = await _unitOfWork.OrderDetail.GetAllAsync(
                 filter: od => od.OrderHeaderId == id,
-                includes: od => od.Product);
+                0,
+                0,
+                orderBy: od => od.OrderByDescending(od => od.Id),
+                 od => od.Product,
+                 od => od.Product.ProductImages);
 
             // Clear cart items after successful order
             var cartItems = await _unitOfWork.Cart.GetAllAsync(
@@ -234,7 +244,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Minus(int cartId)
         {
-            var cartItem = await _unitOfWork.Cart.GetByIdAsync(cartId, c => c.Product);
+            var cartItem = await _unitOfWork.Cart.GetByIdAsync(cartId, c => c.Product,c=>c.Product.ProductImages);
             if (cartItem == null)
                 return RedirectToAction("Index");
 
@@ -260,7 +270,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Remove(int cartId)
         {
-            var cartItem = await _unitOfWork.Cart.GetByIdAsync(cartId, c => c.Product);
+            var cartItem = await _unitOfWork.Cart.GetByIdAsync(cartId, c => c.Product, c => c.Product.ProductImages);
             if (cartItem == null)
                 return NotFound();
 

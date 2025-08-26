@@ -25,7 +25,15 @@
             <div class="col-lg-5 mb-4">
                 <div class="product-main-image-container">
                     <div class="product-image-wrapper">
-                        <img src="@Model.Product.ImageUrl" alt="@Model.Product.Title" class="product-main-image" />
+                        @if(Model.Product.ProductImages != null && Model.Product.ProductImages.Count() > 0  )
+                        {
+                            <img src="@Model.Product.ProductImages.FirstOrDefault().ImageUrl" alt="@Model.Product.Title" class="product-main-image" />
+                        }
+                        else
+                        {
+                            <img src="https://placehold.jp/500x600.png" class="product-main-image" alt="No Image Available">
+                        }
+                        
                     </div>
                     <div class="product-badges">
                         <span class="badge bg-warning text-dark">@Model.Product.Category.Name</span>
@@ -114,8 +122,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            @*Disabled For Now (Coming Soon.....)*@
+
                             <div class="action-buttons">
                                 <button  type="submit" class="btn btn-primary btn-lg add-to-cart-btn">
                                     <i class="bi bi-cart-plus"></i> Add to Cart

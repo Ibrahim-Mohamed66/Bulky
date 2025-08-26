@@ -48,8 +48,14 @@
                                         <div class="row align-items-center">
                                             <!-- Product Image -->
                                             <div class="col-md-2">
-                                                    <img src="@item.Product.ImageUrl" class="img-fluid product-image" alt="@item.Product.Title">
-
+                                                @if (item.Product.ProductImages != null && item.Product.ProductImages.Count() > 0)
+                                                {
+                                                    <img src="@item.Product.ProductImages.FirstOrDefault().ImageUrl" class="img-fluid product-image" alt="@item.Product.Title">
+                                                }
+                                                else
+                                                {
+                                                    <img src="https://placehold.jp/500x600.png" class="img-fluid product-image" alt="No Image Available">
+                                                }
                                             </div>
 
                                             <!-- Product Details -->

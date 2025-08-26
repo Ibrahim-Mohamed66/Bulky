@@ -48,7 +48,14 @@
                                         <!-- Product Image -->
                                         <div class="col-md-2">
                                             <div class="product-image-container">
-                                                <img src="@item.Product.ImageUrl" class="img-fluid product-image" alt="@item.Product.Title">
+                                                @if(item.Product.ProductImages != null && item.Product.ProductImages.Count() > 0)
+                                                {
+                                                    <img src="@item.Product.ProductImages.FirstOrDefault().ImageUrl" class="img-fluid product-image" alt="@item.Product.Title">
+                                                }
+                                                else
+                                                {
+                                                    <img src="https://placehold.jp/500x600.png" class="img-fluid product-image" alt="No Image Available">
+                                                }
                                                 <div class="image-overlay">
                                                     <button class="btn-quick-view" title="Quick View">
                                                         <a asp-controller="Home" asp-action="Details" asp-route-productId="@item.ProductId"><i class="bi bi-eye"></i></a>

@@ -80,7 +80,7 @@
                                                 </td>
                                                 <td class="quantity">@item.Count</td>
                                                 <td class="price">@item.Product.Price.ToString("C")</td>
-                                                <td class="total">@((item.Price * item.Count).ToString("C"))</td>
+                                                <td class="total">@((item.Product.Price * item.Count).ToString("C"))</td>
                                             </tr>
                                         }
                                     </tbody>

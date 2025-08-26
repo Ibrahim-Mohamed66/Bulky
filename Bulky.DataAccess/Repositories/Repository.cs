@@ -41,9 +41,9 @@ public class Repository<TEntity, TId> : IRepository<TEntity, TId> where TEntity 
 
 
     public async Task<IEnumerable<TEntity>> GetAllAsync(
+        Expression<Func<TEntity, bool>>? filter = null,
         int pageNumber = 0,
         int pageSize = 0,
-        Expression<Func<TEntity, bool>>? filter = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
         params Expression<Func<TEntity, object>>[]? includes)
     {

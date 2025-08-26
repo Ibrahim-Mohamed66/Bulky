@@ -10,6 +10,7 @@ public interface IUnitOfWork
     IApplicationUserRepository ApplicationUser { get; }
     IOrderHeaderRepository OrderHeader { get; }
     IOrderDetailRepository OrderDetail { get; }
+    IProductImageRepository ProductImage { get; }  
 
     Task SaveChangesAsync();
 }

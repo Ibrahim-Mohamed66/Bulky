@@ -473,10 +473,6 @@ namespace Bulky.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsHidden")
                         .HasColumnType("bit");
 
@@ -516,7 +512,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Harper Lee's Pulitzer Prize-winning novel explores racial injustice and moral growth in the American South. Through young Scout Finch's eyes, the story of her father, Atticus, defending a Black man unjustly accused, reveals themes of empathy, courage, and humanity. A timeless classic celebrated for its powerful narrative.",
                             DisplayOrder = 1,
                             ISBN = "978-0-06-112008-4",
-                            ImageUrl = "\\images\\products\\daa24267-8df5-4c8d-b923-11ff134e4994.jpg",
                             IsHidden = false,
                             ListPrice = 18.989999999999998,
                             Price = 16.989999999999998,
@@ -533,7 +528,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "F. Scott Fitzgerald's iconic novel captures the Jazz Age's extravagance and disillusionment. Jay Gatsby's obsessive love for Daisy Buchanan and his pursuit of the American Dream unravel in a tragic tale of wealth, ambition, and unattainable desires, set against a backdrop of opulent Long Island parties.",
                             DisplayOrder = 2,
                             ISBN = "978-0-7432-7356-5",
-                            ImageUrl = "\\images\\products\\f460667e-d6b1-4eaa-b98f-371678bc64a8.jpg",
                             IsHidden = false,
                             ListPrice = 16.989999999999998,
                             Price = 14.99,
@@ -550,7 +544,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "George Orwell's chilling dystopian novel depicts a totalitarian world of surveillance and control. Winston Smith's rebellion against the oppressive Party and Big Brother explores themes of freedom, truth, and individuality. A haunting, prophetic masterpiece that remains a cornerstone of modern literature.",
                             DisplayOrder = 3,
                             ISBN = "978-0-452-28423-4",
-                            ImageUrl = "\\images\\products\\b8fd5d61-67ff-4058-beb7-d82d833d2aa4.jpg",
                             IsHidden = false,
                             ListPrice = 19.989999999999998,
                             Price = 17.989999999999998,
@@ -567,7 +560,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Frank Herbert's epic sci-fi saga follows young Paul Atreides on the desert planet Arrakis, where the valuable spice melange shapes destinies. Blending politics, religion, and ecology, this richly detailed masterpiece explores power and survival in a gripping, universe-spanning narrative.",
                             DisplayOrder = 4,
                             ISBN = "978-0-441-17271-9",
-                            ImageUrl = "\\images\\products\\d2497e8a-81f5-4472-a671-eee13524dd2b.jpg",
                             IsHidden = false,
                             ListPrice = 22.989999999999998,
                             Price = 20.989999999999998,
@@ -584,7 +576,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Orson Scott Card's gripping sci-fi novel follows young Ender Wiggin, a brilliant strategist trained to lead humanity against an alien threat. Combining intense military tactics with deep moral questions, this coming-of-age tale explores leadership, sacrifice, and the cost of war.",
                             DisplayOrder = 5,
                             ISBN = "978-0-8125-5070-2",
-                            ImageUrl = "\\images\\products\\8244510a-91c2-4cbe-90bf-7b6bf38783a5.jpg",
                             IsHidden = false,
                             ListPrice = 18.989999999999998,
                             Price = 16.989999999999998,
@@ -601,7 +592,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Andy Weir's thrilling sci-fi novel follows astronaut Mark Watney, stranded on Mars after a mission goes awry. With ingenuity and humor, he fights to survive using science and resourcefulness. Praised for its scientific accuracy, this gripping tale of resilience captivates readers.",
                             DisplayOrder = 6,
                             ISBN = "978-0-8041-3902-1",
-                            ImageUrl = "\\images\\products\\c5d93804-05cc-4403-8049-1577bd6ef496.jpg",
                             IsHidden = false,
                             ListPrice = 20.989999999999998,
                             Price = 18.989999999999998,
@@ -618,7 +608,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Stieg Larsson's gripping thriller follows journalist Mikael Blomkvist and hacker Lisbeth Salander as they unravel a decades-old mystery of murder and corruption in Sweden. This dark, suspenseful tale of revenge and intrigue became a global phenomenon for its complex characters.",
                             DisplayOrder = 7,
                             ISBN = "978-0-307-45454-1",
-                            ImageUrl = "\\images\\products\\243af559-d40c-42da-99b4-1ed75ee96d1d.jpg",
                             IsHidden = false,
                             ListPrice = 19.989999999999998,
                             Price = 17.989999999999998,
@@ -635,7 +624,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Agatha Christie's ingenious mystery, featuring Hercule Poirot, unravels the murder of a wealthy man in a quiet English village. Renowned for its shocking twist, this classic redefined the detective genre with its clever narrative and meticulous plotting.",
                             DisplayOrder = 8,
                             ISBN = "978-0-06-207349-4",
-                            ImageUrl = "\\images\\products\\34507dbf-7ceb-43df-bab8-32d5e4c18cdb.jpg",
                             IsHidden = false,
                             ListPrice = 16.989999999999998,
                             Price = 14.99,
@@ -652,7 +640,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Agatha Christie's chilling masterpiece traps ten strangers on an isolated island, where they face a murderer among them. With suspenseful pacing and a brilliant plot, this bestselling mystery keeps readers guessing until the shocking conclusion.",
                             DisplayOrder = 9,
                             ISBN = "978-0-06-207348-7",
-                            ImageUrl = "\\images\\products\\7e58b144-b584-42d4-9c17-09b9de15402f.jpg",
                             IsHidden = false,
                             ListPrice = 17.989999999999998,
                             Price = 15.99,
@@ -669,7 +656,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Jane Austen's timeless romance follows spirited Elizabeth Bennet and wealthy Mr. Darcy as they navigate love, pride, and societal expectations. With sharp wit and insightful social commentary, this beloved classic explores personal growth and enduring love in 19th-century England.",
                             DisplayOrder = 10,
                             ISBN = "978-0-14-143951-8",
-                            ImageUrl = "\\images\\products\\565b71ed-12d3-4056-aaae-44664636c40c.jpg",
                             IsHidden = false,
                             ListPrice = 15.99,
                             Price = 13.99,
@@ -686,11 +672,10 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Sarah J. Maas's enchanting romantasy follows Feyre, a human huntress drawn into a magical faerie world. Inspired by Beauty and the Beast, this steamy, action-packed tale blends romance and fantasy, captivating readers with its lush world and complex characters.",
                             DisplayOrder = 11,
                             ISBN = "978-1-61963-693-3",
-                            ImageUrl = "\\images\\products\\d6ae3472-3de8-4c66-97e8-52fc98c821f6.jpg",
                             IsHidden = false,
                             ListPrice = 21.989999999999998,
                             Price = 19.989999999999998,
-                            Price100 = 17.989999999999998,
+                            Price100 = 0.0,
                             Price50 = 18.989999999999998,
                             Title = "A Court of Thorns and Roses"
                         },
@@ -703,7 +688,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Laura Hillenbrand's gripping biography chronicles Louis Zamperini's extraordinary life—from Olympic athlete to WWII bombardier, POW, and survivor. This inspiring true story of resilience and redemption captures the indomitable human spirit against unimaginable adversity.",
                             DisplayOrder = 12,
                             ISBN = "978-0-8129-8187-5",
-                            ImageUrl = "\\images\\products\\85c0c030-e4a4-4d2f-8e51-ab6f5918031e.jpg",
                             IsHidden = false,
                             ListPrice = 24.989999999999998,
                             Price = 22.989999999999998,
@@ -720,7 +704,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Walter Isaacson's definitive biography reveals the life of Apple co-founder Steve Jobs. Through interviews and unparalleled access, it portrays his brilliance, passion, and flaws, offering an intimate look at the visionary who revolutionized technology and culture.",
                             DisplayOrder = 13,
                             ISBN = "978-1-4516-4853-9",
-                            ImageUrl = "\\images\\products\\daa61ac4-ed64-469b-8288-d1dfd3a0e77d.jpg",
                             IsHidden = false,
                             ListPrice = 26.989999999999998,
                             Price = 24.989999999999998,
@@ -737,7 +720,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Maurice Sendak's beloved children's classic follows Max, a young boy who sails to an island of wild creatures. With stunning illustrations and heartfelt storytelling, this imaginative tale of adventure and belonging captivates readers of all ages.",
                             DisplayOrder = 14,
                             ISBN = "978-0-06-025492-6",
-                            ImageUrl = "\\images\\products\\7f1d85b4-625d-4575-ab84-effd3ad5188b.jpg",
                             IsHidden = false,
                             ListPrice = 12.99,
                             Price = 10.99,
@@ -754,7 +736,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "William L. Shirer's monumental history chronicles Nazi Germany's rise and fall. Drawing on firsthand accounts and extensive research, this definitive work offers a chilling, detailed narrative of Hitler's regime and its catastrophic impact on the world.",
                             DisplayOrder = 15,
                             ISBN = "978-1-4516-4592-7",
-                            ImageUrl = "\\images\\products\\0fbcafb1-4f9b-43b0-b5f9-23e65a126913.jpg",
                             IsHidden = false,
                             ListPrice = 32.990000000000002,
                             Price = 29.989999999999998,
@@ -771,7 +752,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "Howard Zinn's groundbreaking history reframes America's past through the lens of ordinary people, minorities, and the oppressed. From Columbus to the present, this influential work challenges traditional narratives, highlighting struggles for justice and equality.",
                             DisplayOrder = 16,
                             ISBN = "978-0-06-083865-2",
-                            ImageUrl = "\\images\\products\\9595b365-d06d-4d3b-bedd-42c558e1eb39.jpg",
                             IsHidden = false,
                             ListPrice = 24.989999999999998,
                             Price = 22.989999999999998,
@@ -788,7 +768,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "J.R.R. Tolkien's enchanting prelude to The Lord of the Rings follows Bilbo Baggins on an unexpected adventure with dwarves and a wizard. This timeless fantasy, rich with mythical creatures and epic quests, laid the foundation for modern fantasy literature.",
                             DisplayOrder = 17,
                             ISBN = "978-0-547-92822-7",
-                            ImageUrl = "\\images\\products\\c73a8bd9-f43b-41b5-b057-2de625f4772f.jpg",
                             IsHidden = false,
                             ListPrice = 19.989999999999998,
                             Price = 17.989999999999998,
@@ -805,7 +784,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "George R.R. Martin's epic fantasy launches A Song of Ice and Fire with intricate political intrigue and vivid characters. In a world where seasons last years, noble families vie for the Iron Throne, unaware of ancient threats awakening. A modern fantasy classic.",
                             DisplayOrder = 18,
                             ISBN = "978-0-553-10354-0",
-                            ImageUrl = "\\images\\products\\8e239aa0-19e0-4519-9a58-b7fb9015263b.jpeg",
                             IsHidden = false,
                             ListPrice = 23.989999999999998,
                             Price = 21.989999999999998,
@@ -822,7 +800,6 @@ namespace Bulky.DataAccess.Migrations
                             Description = "George R.R. Martin's fifth *A Song of Ice and Fire* novel follows Daenerys Targaryen ruling Meereen with her dragons, while Tyrion Lannister flees Westeros and Jon Snow faces threats at the Wall. Packed with intrigue, betrayal, and epic scope, this installment deepens the saga’s complex narrative.",
                             DisplayOrder = 19,
                             ISBN = "978-0-553-80558-1",
-                            ImageUrl = "\\images\\products\\56fa1605-1471-4837-9d3a-4cc98e80c27f.jpg",
                             IsHidden = false,
                             ListPrice = 23.989999999999998,
                             Price = 21.989999999999998,
@@ -830,6 +807,28 @@ namespace Bulky.DataAccess.Migrations
                             Price50 = 20.989999999999998,
                             Title = "A Dance with Dragons"
                         });
+                });
+
+            modelBuilder.Entity("Bulky.Models.Models.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1034,6 +1033,17 @@ namespace Bulky.DataAccess.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Bulky.Models.Models.ProductImage", b =>
+                {
+                    b.HasOne("Bulky.Models.Models.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1088,6 +1098,11 @@ namespace Bulky.DataAccess.Migrations
             modelBuilder.Entity("Bulky.Models.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Bulky.Models.Models.Product", b =>
+                {
+                    b.Navigation("ProductImages");
                 });
 #pragma warning restore 612, 618
         }

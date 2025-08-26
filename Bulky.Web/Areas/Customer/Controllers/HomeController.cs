@@ -40,11 +40,12 @@ namespace BulkyWeb.Areas.Customer.Controllers
             page = Math.Max(1, Math.Min(page, totalPages));
 
             var products = await _unitOfWork.Product.GetAllAsync(
-                filter: p => p.IsHidden == false,
-                includes: p => p.Category,
-                orderBy: q => q.OrderBy(p => p.DisplayOrder),
+                filter: p => !p.IsHidden,
                 pageNumber: page,
-                pageSize: pageSize
+                pageSize: pageSize,
+                orderBy: q => q.OrderBy(p => p.DisplayOrder),
+                p => p.Category,
+                p => p.ProductImages
             );
 
             ViewBag.CurrentPage = page;
@@ -66,7 +67,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 HttpContext.Session.SetInt32(StaticData.SessionCart,
                     (await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == userId)).Count());
             }
-            var products = await _unitOfWork.Product.GetByIdAsync(productId, includes: p => p.Category);
+            var products = await _unitOfWork.Product.GetByIdAsync(productId, p => p.Category, p=>p.ProductImages);
             var cart = new Cart
             {
                 Product = products,
