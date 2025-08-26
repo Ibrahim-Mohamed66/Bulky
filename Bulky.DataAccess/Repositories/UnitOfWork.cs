@@ -19,6 +19,7 @@ public class UnitOfWork: IUnitOfWork
         OrderHeader = new OrderHeadeRepository(_dbContext);
         OrderDetail = new OrderDetailRepository(_dbContext);
         ProductImage = new ProductImageRepository(_dbContext);
+        Section = new SectionRepository(_dbContext);
     }
 
     public ICategoryRepository Category { get; private set; }
@@ -29,6 +30,7 @@ public class UnitOfWork: IUnitOfWork
     public IOrderHeaderRepository OrderHeader { get; private set; }
     public IOrderDetailRepository OrderDetail { get; private set; }
     public IProductImageRepository ProductImage { get; private set; }
+    public ISectionRepository Section { get; private set; }
 
 
     public async Task SaveChangesAsync()

@@ -19,6 +19,8 @@ public class BulkyDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<OrderDetail> OrderDetails { get; set; }
     public DbSet<OrderHeader> OrderHeaders { get; set; }
     public DbSet<ProductImage> ProductImages { get; set; }
+    public DbSet<Section> Sections { get; set; }
+
 
 
 

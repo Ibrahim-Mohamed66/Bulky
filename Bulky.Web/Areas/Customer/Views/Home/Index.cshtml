@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model HomeVM
 @{
     ViewData["Title"] = "Bulky - Your Premium Bookstore";
 }
@@ -133,7 +133,7 @@
 
         <!-- Product Grid -->
         <div class="row" id="productGrid">
-            @foreach (var product in Model)
+            @foreach (var product in Model.Products)
             {
                 <div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-item fade-in" data-filter="@product.Category.Name.ToLower()">
                     <div class="card product-card h-100 shadow-sm position-relative">

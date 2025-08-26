@@ -26,6 +26,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             if (pageSize <= 0) pageSize = 12;
             if (page <= 0) page = 1;
 
+
+
             Expression<Func<Product, bool>> predicate;
             if (!string.IsNullOrEmpty(filter) && filter.ToLower() != "all")
             {
@@ -61,7 +63,14 @@ namespace BulkyWeb.Areas.Customer.Controllers
             ViewBag.HasNextPage = page < totalPages;
             ViewBag.SelectedFilter = filter ?? "all";
 
-            return View(products);
+            var homePageVm = new HomeVM
+            {
+                Products = products,
+                Sections = await _unitOfWork.Section.GetAllAsync(filter: s =>!s.IsHidden && s.IsHomePage)
+            };
+
+
+            return View(homePageVm);
         }
 
 
