@@ -48,40 +48,25 @@
                             @if (User.IsInRole(StaticData.Role_Admin))
                             {
 
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link  p-2 p-lg-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Admin Dashboard
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
-                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products</a>
-                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Companies</a>
-                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="Index">Orders</a>
-                                        </li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <a class="dropdown-item" asp-page="/Account/Register" asp-area="Identity">Create Users</a>
-                                        <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Users Management</a>
-
-                                    </ul>
+                                <li class="nav-item">
+                                    <a class="nav-link p-2 p-lg-3 " asp-area="Admin" asp-controller="Product" asp-action="Index">Dashboard</a>
                                 </li>
                             }
                         </ul>
                         <ul class="navbar-nav ms-auto">
                             @if (HttpContextAccessor.HttpContext.Session.GetInt32(StaticData.SessionCart) != null)
                             {
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" asp-area="Customer" asp-controller="Cart" asp-action="Index">
                                         @await Component.InvokeAsync("Cart")
                                     </a>
                                 </li>
                             }
                             else
                             {
-                                <li class="nav-item me-3">
-                                    <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                        <i class="bi bi-cart3"></i>
-                                        <span class="cart-counter badge bg-danger rounded-pill  ms-1">0</span>
+                                <li class="nav-item">
+                                    <a class="nav-link d-flex align-items-center" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                        @await Component.InvokeAsync("Cart")
                                     </a>
                                 </li>
                             }

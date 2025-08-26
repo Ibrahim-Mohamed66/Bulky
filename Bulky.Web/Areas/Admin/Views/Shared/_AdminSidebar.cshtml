@@ -1,0 +1,131 @@
+<aside class="admin-sidebar">
+    <div class="sidebar-header">
+        <div class="admin-profile">
+            <div class="profile-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="profile-info">
+                <h6 class="profile-name">@User.Identity.Name</h6>
+                <span class="profile-role">Administrator</span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul class="nav-menu">
+            <!-- Dashboard -->
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Products Management -->
+            <li class="nav-item has-submenu">
+                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#productsMenu" aria-expanded="false">
+                    <i class="nav-icon fas fa-box"></i>
+                    <span class="nav-text">Products</span>
+                    <i class="nav-arrow fas fa-chevron-down"></i>
+                </a>
+                <ul class="nav-submenu collapse" id="productsMenu">
+                    <li>
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link">
+                            <i class="nav-icon fas fa-list"></i>
+                            <span class="nav-text">All Products</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Upsert" class="nav-link">
+                            <i class="nav-icon fas fa-plus"></i>
+                            <span class="nav-text">Add Product</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link">
+                            <i class="nav-icon fas fa-tags"></i>
+                            <span class="nav-text">Categories</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Orders Management -->
+            <li class="nav-item has-submenu">
+                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#ordersMenu" aria-expanded="false">
+                    <i class="nav-icon fas fa-shopping-cart"></i>
+                    <span class="nav-text">Orders</span>
+                    <i class="nav-arrow fas fa-chevron-down"></i>
+                </a>
+                <ul class="nav-submenu collapse" id="ordersMenu">
+                    <li>
+                        <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link">
+                            <i class="nav-icon fas fa-list"></i>
+                            <span class="nav-text">All Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="pending" class="nav-link">
+                            <i class="nav-icon fas fa-clock"></i>
+                            <span class="nav-text">Pending Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="approved" class="nav-link">
+                            <i class="nav-icon fas fa-check"></i>
+                            <span class="nav-text">Approved Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Order" asp-action="Index" asp-route-status="shipped" class="nav-link">
+                            <i class="nav-icon fas fa-shipping-fast"></i>
+                            <span class="nav-text">Shipped Orders</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- User Management -->
+            <li class="nav-item has-submenu">
+                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#usersMenu" aria-expanded="false">
+                    <i class="nav-icon fas fa-users"></i>
+                    <span class="nav-text">Users</span>
+                    <i class="nav-arrow fas fa-chevron-down"></i>
+                </a>
+                <ul class="nav-submenu collapse" id="usersMenu">
+                    <li>
+                        <a asp-area="Admin" asp-controller="User" asp-action="Index" class="nav-link">
+                            <i class="nav-icon fas fa-users-cog"></i>
+                            <span class="nav-text">Manage Users</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-page="/Account/Register" asp-area="Identity" class="nav-link">
+                            <i class="nav-icon fas fa-user-plus"></i>
+                            <span class="nav-text">Create User</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Company Management -->
+            <li class="nav-item">
+                <a asp-area="Admin" asp-controller="Company" asp-action="Index" class="nav-link">
+                    <i class="nav-icon fas fa-building"></i>
+                    <span class="nav-text">Companies</span>
+                </a>
+            </li>
+
+            
+            
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="quick-actions">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-outline-light btn-sm" title="View Store">
+                <i class="fas fa-store"></i>
+            </a>
+        </div>
+    </div>
+</aside>

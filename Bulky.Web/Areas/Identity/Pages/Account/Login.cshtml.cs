@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Bulky.Models.Models;
+using Bulky.Utility;
 
 namespace BulkyWeb.Areas.Identity.Pages.Account
 {
@@ -117,6 +118,10 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                 {
                     TempData["Success"] = "Login successful!";
                     _logger.LogInformation("User logged in.");
+                    if (User.IsInRole(StaticData.Role_Admin))
+                    {
+                        return LocalRedirect("~/Admin/Product/Index");
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
