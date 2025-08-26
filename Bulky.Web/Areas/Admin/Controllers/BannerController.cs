@@ -133,45 +133,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             TempData["error"] = "Error while updating Banner";
             return RedirectToAction("Index");
         }
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var existingBanner = await _unitOfWork.Banner.GetByIdAsync(id);
-            if (existingBanner == null)
-                return NotFound();
-
-            return View(existingBanner);
-        }
-
-
-        [HttpPost]
-        [ActionName("Delete")]
-        public async Task<IActionResult> DeletePost(Banner banner)
-        {
-            var existingBanner = await _unitOfWork.Banner.GetByIdAsync(banner.Id);
-            if (existingBanner == null)
-            {
-                TempData["error"] = "Banner not found";
-                return RedirectToAction("Index");
-            }
-
-            // Delete the section image if it exists
-            if (!string.IsNullOrEmpty(existingBanner.ImageUrl))
-            {
-                var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, existingBanner.ImageUrl.TrimStart('\\', '/'));
-                if (System.IO.File.Exists(oldImagePath))
-                {
-                    System.IO.File.Delete(oldImagePath);
-                }
-            }
-
-            // Remove the section from database
-            await _unitOfWork.Banner.RemoveAsync(existingBanner.Id);
-            await _unitOfWork.SaveChangesAsync();
-
-            TempData["success"] = "Banner deleted successfully";
-            return RedirectToAction("Index");
-        }
+        
     }
 }
 
