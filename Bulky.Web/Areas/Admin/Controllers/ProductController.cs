@@ -128,6 +128,7 @@ public class ProductController : Controller
             });
         return RedirectToAction(nameof(Index));
     }
+    
 
     public async Task<IActionResult> DeleteImage(int imageId)
     {

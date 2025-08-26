@@ -23,11 +23,12 @@ public class Program
         builder.Services.AddControllersWithViews();
         builder.Services.AddRazorPages();
         var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
-        builder.Services.AddDbContext<BulkyDbContext>(options =>options.UseSqlServer(defaultConnection));
+        builder.Services.AddDbContext<BulkyDbContext>(options => options.UseSqlServer(defaultConnection));
         builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BulkyDbContext>().AddDefaultTokenProviders();
-        builder.Services.ConfigureApplicationCookie(options => {
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
             options.LoginPath = $"/Identity/Account/Login";
             options.LogoutPath = $"/Identity/Account/Logout";
             options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
@@ -36,12 +37,26 @@ public class Program
         {
             options.AppId = builder.Configuration["Authentication:Facebook:AppId"];
             options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
-        });
-        builder.Services.AddAuthentication().AddGoogle(options =>
+
+            options.Events.OnRemoteFailure = context =>
+            {
+                context.HandleResponse(); // Prevents the exception from propagating
+                context.Response.Redirect("Identity/Account/Login");
+                return Task.CompletedTask;
+            };
+        }).AddGoogle(options =>
         {
             options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
             options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+
+            options.Events.OnRemoteFailure = context =>
+            {
+                context.HandleResponse();
+                context.Response.Redirect("Identity/Account/Login");
+                return Task.CompletedTask;
+            };
         });
+
 
         builder.Services.AddDistributedMemoryCache();
         builder.Services.AddSession(options =>

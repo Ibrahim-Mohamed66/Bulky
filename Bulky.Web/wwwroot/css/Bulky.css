@@ -435,6 +435,10 @@
     font-size: 0.9rem;
 }
 
+.filter-chips a {
+    color:black;
+}
+
 .filter-chip:hover,
 .filter-chip.active {
     background: #192E2F;

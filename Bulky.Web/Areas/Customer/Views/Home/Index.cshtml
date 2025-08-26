@@ -5,7 +5,6 @@
 
 @Html.AntiForgeryToken()
 
-@Html.AntiForgeryToken()
 
 <!-- Hero Section -->
 <section class="hero-section">
@@ -110,12 +109,20 @@
 
         <!-- Filter Chips -->
         <div class="filter-chips mb-4">
-            <div class="filter-chip active" data-filter="all">All Books</div>
-            <div class="filter-chip" data-filter="fiction">Fiction</div>
-            <div class="filter-chip" data-filter="non-fiction">Non-Fiction</div>
-            <div class="filter-chip" data-filter="bestseller">Bestsellers</div>
-            <div class="filter-chip" data-filter="new">New Arrivals</div>
-            <div class="filter-chip" data-filter="sale">On Sale</div>
+            <a class="filter-chip  text-decoration-none @(ViewBag.SelectedFilter == "all" ? "active" : "")"
+               asp-action="Index" asp-route-filter="all">All Books</a>
+
+            <a class="filter-chip  text-decoration-none @(ViewBag.SelectedFilter == "fiction" ? "active" : "")"
+               asp-action="Index" asp-route-filter="fiction">Fiction</a>
+
+            <a class="filter-chip  text-decoration-none @(ViewBag.SelectedFilter == "history" ? "active" : "")"
+               asp-action="Index" asp-route-filter="history">History</a>
+
+            <a class="filter-chip  text-decoration-none @(ViewBag.SelectedFilter == "fantasy" ? "active" : "")"
+               asp-action="Index" asp-route-filter="fantasy">Fantasy</a>
+
+            <a class="filter-chip  text-decoration-none @(ViewBag.SelectedFilter == "mystery" ? "active" : "")"
+               asp-action="Index" asp-route-filter="mystery">Mystery</a>
         </div>
 
         <!-- Section Header -->
@@ -128,7 +135,7 @@
         <div class="row" id="productGrid">
             @foreach (var product in Model)
             {
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-item fade-in">
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-item fade-in" data-filter="@product.Category.Name.ToLower()">
                     <div class="card product-card h-100 shadow-sm position-relative">
                         <!-- Clickable Card Overlay -->
                         <a asp-action="Details" asp-area="Customer" asp-route-productId="@product.Id" class="card-link-overlay" title="View @product.Title Details"></a>
@@ -228,7 +235,10 @@
                                 @if (ViewBag.HasPreviousPage)
                                 {
                                     <li class="page-item">
-                                        <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)" asp-route-pageSize="@ViewBag.PageSize">
+                                        <a class="page-link" asp-action="Index"
+                                           asp-route-page="@(ViewBag.CurrentPage - 1)"
+                                           asp-route-pageSize="@ViewBag.PageSize"
+                                           asp-route-filter="@ViewBag.SelectedFilter">
                                             <i class="bi bi-chevron-left"></i> Previous
                                         </a>
                                     </li>
@@ -250,7 +260,10 @@
                                     if (startPage > 1)
                                     {
                                         <li class="page-item">
-                                            <a class="page-link" asp-action="Index" asp-route-page="1" asp-route-pageSize="@ViewBag.PageSize">1</a>
+                                            <a class="page-link" asp-action="Index"
+                                               asp-route-page="1"
+                                               asp-route-pageSize="@ViewBag.PageSize"
+                                               asp-route-filter="@ViewBag.SelectedFilter">1</a>
                                         </li>
                                         if (startPage > 2)
                                         {
@@ -271,7 +284,10 @@
                                         else
                                         {
                                             <li class="page-item">
-                                                <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-pageSize="@ViewBag.PageSize">@i</a>
+                                                <a class="page-link" asp-action="Index"
+                                                   asp-route-page="@i"
+                                                   asp-route-pageSize="@ViewBag.PageSize"
+                                                   asp-route-filter="@ViewBag.SelectedFilter">@i</a>
                                             </li>
                                         }
                                     }
@@ -285,7 +301,10 @@
                                             </li>
                                         }
                                         <li class="page-item">
-                                            <a class="page-link" asp-action="Index" asp-route-page="@ViewBag.TotalPages" asp-route-pageSize="@ViewBag.PageSize">@ViewBag.TotalPages</a>
+                                            <a class="page-link" asp-action="Index"
+                                               asp-route-page="@ViewBag.TotalPages"
+                                               asp-route-pageSize="@ViewBag.PageSize"
+                                               asp-route-filter="@ViewBag.SelectedFilter">@ViewBag.TotalPages</a>
                                         </li>
                                     }
                                 }
@@ -294,7 +313,10 @@
                                 @if (ViewBag.HasNextPage)
                                 {
                                     <li class="page-item">
-                                        <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)" asp-route-pageSize="@ViewBag.PageSize">
+                                        <a class="page-link" asp-action="Index"
+                                           asp-route-page="@(ViewBag.CurrentPage + 1)"
+                                           asp-route-pageSize="@ViewBag.PageSize"
+                                           asp-route-filter="@ViewBag.SelectedFilter">
                                             Next <i class="bi bi-chevron-right"></i>
                                         </a>
                                     </li>
@@ -341,31 +363,31 @@
 
     <script>
         $(document).ready(function() {
-        // Filter chip logic
-        $('.filter-chip').on('click', function() {
-            $('.filter-chip').removeClass('active');
-            $(this).addClass('active');
-        });
+            // Filter chip logic
+            $('.filter-chip').on('click', function() {
+                $('.filter-chip').removeClass('active');
+                $(this).addClass('active');
 
-        // Quantity validation logic
-        function validateQuantity($input) {
-            let quantity = parseInt($input.val());
-            if (isNaN(quantity) || quantity < 1) {
-                quantity = 1;
-            } else if (quantity > 999) {
-                quantity = 999;
+
+
+            function validateQuantity($input) {
+                let quantity = parseInt($input.val());
+                if (isNaN(quantity) || quantity < 1) {
+                    quantity = 1;
+                } else if (quantity > 999) {
+                    quantity = 999;
+                }
+                $input.val(quantity);
             }
-            $input.val(quantity);
-        }
 
-        $(".quantity-input").each(function () {
-            validateQuantity($(this));
+            $(".quantity-input").each(function () {
+                validateQuantity($(this));
+            });
+
+            $(document).on("input blur", ".quantity-input", function () {
+                validateQuantity($(this));
+            });
         });
-
-        $(document).on("input blur", ".quantity-input", function () {
-            validateQuantity($(this));
-        });
-    });
-
     </script>
+
 }

@@ -1,13 +1,12 @@
+using Azure;
 using Bulky.DataAccess.Repositories.IRepositories;
 using Bulky.Models.Models;
 using Bulky.Models.ViewModels;
 using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using System.Linq.Expressions;
 using System.Security.Claims;
-using System.Threading.Tasks;
-
 namespace BulkyWeb.Areas.Customer.Controllers
 {
     [Area("Customer")]
@@ -22,25 +21,30 @@ namespace BulkyWeb.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 12)
+        public async Task<IActionResult> Index(string filter, int page = 1, int pageSize = 12)
         {
-            var claims = (ClaimsIdentity)User.Identity;
-            var userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if(userId != null)
+            if (pageSize <= 0) pageSize = 12;
+            if (page <= 0) page = 1;
+
+            Expression<Func<Product, bool>> predicate;
+            if (!string.IsNullOrEmpty(filter) && filter.ToLower() != "all")
             {
-                HttpContext.Session.SetInt32(StaticData.SessionCart,
-                    (await _unitOfWork.Cart.GetAllAsync(filter: c => c.ApplicationUserId == userId)).Count());
+                predicate = p => !p.IsHidden && p.Category.Name.ToLower() == filter.ToLower();
+            }
+            else
+            {
+                predicate = p => !p.IsHidden;
             }
 
-            if (pageSize <= 0) pageSize = 12;
-            if(page <= 1) page = 1;
-            var totalProducts = await _unitOfWork.Product.GetCountAsync(p => p.IsHidden == false);
+            var totalProducts = await _unitOfWork.Product.GetCountAsync(predicate);
 
+            // Calculate total pages
             var totalPages = (int)Math.Ceiling((double)totalProducts / pageSize);
-            page = Math.Max(1, Math.Min(page, totalPages));
+            page = Math.Max(1, Math.Min(page, totalPages == 0 ? 1 : totalPages)); 
 
+            // Get paginated filtered products
             var products = await _unitOfWork.Product.GetAllAsync(
-                filter: p => !p.IsHidden,
+                filter: predicate,
                 pageNumber: page,
                 pageSize: pageSize,
                 orderBy: q => q.OrderBy(p => p.DisplayOrder),
@@ -48,15 +52,18 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 p => p.ProductImages
             );
 
+            // Pass pagination + filter info to view
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = totalPages;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalProducts = totalProducts;
             ViewBag.HasPreviousPage = page > 1;
             ViewBag.HasNextPage = page < totalPages;
+            ViewBag.SelectedFilter = filter ?? "all";
 
             return View(products);
         }
+
 
         public async Task<IActionResult> Details(int productId)
         {
@@ -193,6 +200,6 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 return Json(new { success = false, message = "An error occurred while adding to cart" });
             }
         }
-    } 
+    }
     #endregion
 }
