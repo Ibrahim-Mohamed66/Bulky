@@ -66,7 +66,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             var homePageVm = new HomeVM
             {
                 Products = products,
-                Sections = await _unitOfWork.Section.GetAllAsync(filter: s =>!s.IsHidden && s.IsHomePage)
+                Sections = await _unitOfWork.Section.GetAllAsync(filter: s => !s.IsHidden && s.IsHomePage),
+                Banner = (await _unitOfWork.Banner.GetAllAsync()).FirstOrDefault()
             };
 
 

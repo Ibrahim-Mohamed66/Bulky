@@ -9,19 +9,18 @@
 <!-- Hero Section -->
 <section class="hero-section">
     <div class="hero-background">
+        <img src="@Model.Banner.ImageUrl" alt="Alternate Text" />
         <div class="hero-overlay"></div>
         <div class="container">
             <div class="row align-items-center min-vh-75">
                 <div class="col-lg-6">
                     <div class="hero-content">
                         <h1 class="hero-title">
-                            Discover Your Next
-                            <span class="text-gradient">Great Read</span>
+                            @Html.Raw(Model.Banner.Title)
                         </h1>
-                        <p class="hero-subtitle">
-                            Welcome to Bulky, your premier destination for books that inspire, educate, and entertain.
-                            From bestsellers to hidden gems, we have something for every reader.
-                        </p>
+                            <div class="hero-subtitle">
+                                @Html.Raw(Model.Banner.Description)
+                            </div>
 
                         <!-- Stats -->
                         <div class="hero-stats">

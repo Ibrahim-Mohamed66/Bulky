@@ -20,6 +20,8 @@ public class BulkyDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<OrderHeader> OrderHeaders { get; set; }
     public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<Section> Sections { get; set; }
+    public DbSet<Banner> Banners { get; set; }
+
 
 
 

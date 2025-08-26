@@ -72,6 +72,21 @@ public class Repository<TEntity, TId> : IRepository<TEntity, TId> where TEntity 
         return await query.ToListAsync();
     }
 
+    public async Task<bool> AnyAsync()
+    {
+        return await _dbSet.AnyAsync();
+    }
+
+    public async Task<TEntity?> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>>? filter = null)
+    {
+        IQueryable<TEntity> query = _dbSet;
+        if (filter != null)
+            query = query.Where(filter);
+
+        return await query.FirstOrDefaultAsync();
+    }
+
+
     public async Task<TEntity?> GetByIdAsync(TId id, params Expression<Func<TEntity, object>>[]? includes)
     {
         IQueryable<TEntity> query = _dbSet.AsNoTracking();

@@ -116,27 +116,41 @@
                 </a>
             </li>
 
-            <!--Layout Management-->
+            <!-- Divider -->
+            <li class="nav-divider m-0 my-2">
+                <hr class="sidebar-divider">
+                <span class="divider-text">Layout & Content</span>
+            </li>
+
+            <!-- Section Management -->
             <li class="nav-item has-submenu">
                 <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#sectionsMenu" aria-expanded="false">
                     <i class="nav-icon bi bi-layout-split"></i>
-                    <span class=" nav-text">Layout</span>
+                    <span class="nav-text">Sections</span>
                     <i class="nav-arrow fas fa-chevron-down"></i>
                 </a>
                 <ul class="nav-submenu collapse" id="sectionsMenu">
                     <li>
-                        <a asp-area="Admin" asp-controller="Layout" asp-action="Index" class="nav-link">
+                        <a asp-area="Admin" asp-controller="Section" asp-action="Index" class="nav-link">
                             <i class="nav-icon fas fa-list"></i>
                             <span class="nav-text">All Sections</span>
                         </a>
                     </li>
                     <li>
-                        <a asp-area="Admin" asp-controller="Layout" asp-action="Create" class="nav-link">
+                        <a asp-area="Admin" asp-controller="Section" asp-action="Create" class="nav-link">
                             <i class="nav-icon fas fa-plus"></i>
                             <span class="nav-text">Add Section</span>
                         </a>
                     </li>
                 </ul>
+            </li>
+
+            <!-- Banner Management -->
+            <li class="nav-item">
+                <a asp-area="Admin" asp-controller="Banner" asp-action="Index" class="nav-link">
+                    <i class="nav-icon fas fa-image"></i>
+                    <span class="nav-text">Banner</span>
+                </a>
             </li>
             
             

@@ -1,0 +1,57 @@
+﻿@model List<Banner>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Bannners";
+}
+
+<div class="card shadow border-0 my-3">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Banner List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="row pb-3">
+            <div class="col-6"></div>
+            <div class="col-6 text-end">
+                <a asp-controller="Banner" asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Create New Banner
+                </a>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center align-middle">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var obj in Model.OrderBy(u => u.Id))
+                    {
+                        <tr>
+                            <td>@obj.Id</td>
+                            <td>@obj.Title</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a asp-controller="Banner" asp-action="Update" asp-route-id="@obj.Id" class="btn btn-primary rounded mx-2">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <a asp-controller="Banner" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger rounded mx-2">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                                        }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

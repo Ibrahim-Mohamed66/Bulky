@@ -16,5 +16,8 @@ public interface IRepository<TEntity, TId> where TEntity : class
     Task RemoveAsync(TId id);
     void RemoveRange(IEnumerable<TEntity> entities);
     Task<int> GetCountAsync(Expression<Func<TEntity, bool>>? filter = null);
+    Task<bool> AnyAsync();
+    Task<TEntity?> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>>? filter = null);
+
 
 }
