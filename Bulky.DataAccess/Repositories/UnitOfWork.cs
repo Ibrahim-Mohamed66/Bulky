@@ -21,6 +21,8 @@ public class UnitOfWork: IUnitOfWork
         ProductImage = new ProductImageRepository(_dbContext);
         Section = new SectionRepository(_dbContext);
         Banner = new BannerRepository(_dbContext);
+        Store = new StoreRepository(_dbContext);
+        ProductStore = new ProductStoreRepository(_dbContext);
     }
 
     public ICategoryRepository Category { get; private set; }
@@ -33,6 +35,8 @@ public class UnitOfWork: IUnitOfWork
     public IProductImageRepository ProductImage { get; private set; }
     public ISectionRepository Section { get; private set; }
     public IBannerRepository Banner { get; private set; }
+    public IStoreRepository Store { get; private set; }
+    public IProductStoreRepository ProductStore { get; private set; }
 
 
     public async Task SaveChangesAsync()

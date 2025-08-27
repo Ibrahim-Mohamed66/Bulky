@@ -1,0 +1,42 @@
+﻿@model List<Store>
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Store List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="row pb-3">
+            <div class="col-6">
+                <!-- Left side content if needed -->
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Store" asp-action="Upsert" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Create New Store
+                </a>
+            </div>
+        </div>
+
+        <!-- Make table responsive by wrapping inside a div -->
+        <div class="table-responsive">
+            <table id="store-table" class="table table-bordered text-center table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>Store Name</th>
+                        <th>Phone Number</th>
+                        <th>State</th>
+                        <th>City</th>
+                        <th>Street Address</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/store.js"></script>
+}

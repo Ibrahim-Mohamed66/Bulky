@@ -13,6 +13,8 @@ public interface IUnitOfWork
     IProductImageRepository ProductImage { get; }  
     ISectionRepository Section { get; }
     IBannerRepository Banner { get; }
+    IStoreRepository Store { get; }
+    IProductStoreRepository ProductStore { get; }
 
     Task SaveChangesAsync();
 }

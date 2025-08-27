@@ -21,14 +21,26 @@ public class BulkyDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<Section> Sections { get; set; }
     public DbSet<Banner> Banners { get; set; }
-
-
-
+    public DbSet<Store> Stores { get; set; }
+    public DbSet<ProductStore > ProductStores { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<ProductStore>()
+        .HasKey(ps => new { ps.ProductId, ps.StoreId });
+
+        modelBuilder.Entity<ProductStore>()
+            .HasOne(ps => ps.Product)
+            .WithMany(p => p.ProductStores)
+            .HasForeignKey(ps => ps.ProductId);
+
+        modelBuilder.Entity<ProductStore>()
+            .HasOne(ps => ps.Store)
+            .WithMany(s => s.ProductStores)
+            .HasForeignKey(ps => ps.StoreId);
+
 
 
         var baseDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);

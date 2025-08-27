@@ -11,5 +11,9 @@ public class ProductVM
 
     [ValidateNever]
     public IEnumerable<SelectListItem> CategoryList { get; set; } = new List<SelectListItem>();
+    [ValidateNever]
+    public IEnumerable<SelectListItem> StoreList { get; set; } = new List<SelectListItem>();
+    [ValidateNever]
+    public List<int> SelectedStoreIds { get; set; } = new List<int>();
 
 }

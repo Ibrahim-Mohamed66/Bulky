@@ -51,6 +51,8 @@ public class Product : EntityBase
     [ValidateNever]
     public Category? Category { get; set; }
     [ValidateNever]
-    public IEnumerable<ProductImage> ProductImages { get; set; }
+    public ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
+    [ValidateNever]
+    public List<ProductStore> ProductStores { get; set; } = new List<ProductStore>();
 
 }

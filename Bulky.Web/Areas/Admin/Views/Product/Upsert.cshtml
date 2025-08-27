@@ -80,6 +80,13 @@
                         </div>
 
                         <div class="form-floating py-2 col-12">
+                            <select asp-for="SelectedStoreIds"  asp-items="Model.StoreList" multiple class="js-example-basic-multiple form-control border-0 shadow">
+                            </select>
+                            <label asp-for="SelectedStoreIds" class="ms-2">Stores</label>
+                            <span asp-validation-for="SelectedStoreIds" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating py-2 col-12">
                             <input type="file" name="files" class="form-control border-0 shadow" multiple />
                             <label class="ms-2">Product Images</label>
                         </div>
@@ -112,22 +119,22 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    @if(Model.Product.ProductImages != null)
+                    @if (Model.Product.ProductImages != null && Model.Product.ProductImages.Any())
                     {
                         foreach (var img in Model.Product.ProductImages)
                         {
                             <div class="row mb-2">
                                 <div class="col-12">
                                     <img src="@img.ImageUrl" width="100%" style="border-radius:5px; border:1px solid #bbb9b9" />
-                                    <a class="btn btn-sm btn-danger w-100 mt-1" asp-area="Admin" asp-action="DeleteImage" asp-controller="Product" asp-route-imageId="@img.Id">
-                                        <i class="bi bi-trash-fill"></i> Delete
-                                    </a>
+                                    <form asp-area="Admin" asp-action="DeleteImage" asp-controller="Product" asp-route-imageId="@img.Id" method="post">
+                                        <button type="submit" class="btn btn-sm btn-danger w-100 mt-1">
+                                            <i class="bi bi-trash-fill"></i> Delete
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         }
                     }
-
-                   
 
                 </div>
             </div>
@@ -142,7 +149,24 @@
                    selector: 'textarea',
                    plugins: 'anchor autolink charmap codesample emoticons  lists   table visualblocks wordcount',
                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough |  align lineheight | numlist bullist indent outdent',
-               });
+        });
+
+        $(document).ready(function() {
+            $('.js-example-basic-multiple').select2({
+                width: '100%',
+                placeholder: "--Select Store--",
+            });
+
+            $('.js-example-basic-multiple').on('select2:open select2:close change', function() {
+                var $label = $(this).siblings('label');
+                if ($(this).val() && $(this).val().length > 0) {
+                    $label.addClass('select2-has-value');
+                } else {
+                    $label.removeClass('select2-has-value');
+                }
+            });
+        });
     </script>
     <partial name="_ValidationScriptsPartial" />
+
 }

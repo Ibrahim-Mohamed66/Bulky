@@ -4,6 +4,7 @@ using Bulky.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bulky.DataAccess.Migrations
 {
     [DbContext(typeof(BulkyDbContext))]
-    partial class BulkyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250827005347_UpdatingStoresTable")]
+    partial class UpdatingStoresTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -855,21 +858,6 @@ namespace Bulky.DataAccess.Migrations
                     b.ToTable("ProductImages");
                 });
 
-            modelBuilder.Entity("Bulky.Models.Models.ProductStore", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId", "StoreId");
-
-                    b.HasIndex("StoreId");
-
-                    b.ToTable("ProductStores");
-                });
-
             modelBuilder.Entity("Bulky.Models.Models.Section", b =>
                 {
                     b.Property<int>("Id")
@@ -931,7 +919,7 @@ namespace Bulky.DataAccess.Migrations
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("StreetAddress")
+                    b.Property<string>("StreatAddress")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -1072,6 +1060,21 @@ namespace Bulky.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ProductStore", b =>
+                {
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StoresId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductsId", "StoresId");
+
+                    b.HasIndex("StoresId");
+
+                    b.ToTable("ProductStore");
+                });
+
             modelBuilder.Entity("Bulky.Models.Models.ApplicationUser", b =>
                 {
                     b.HasOne("Bulky.Models.Models.Company", "Company")
@@ -1152,25 +1155,6 @@ namespace Bulky.DataAccess.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Bulky.Models.Models.ProductStore", b =>
-                {
-                    b.HasOne("Bulky.Models.Models.Product", "Product")
-                        .WithMany("ProductStores")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Bulky.Models.Models.Store", "Store")
-                        .WithMany("ProductStores")
-                        .HasForeignKey("StoreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("Store");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1222,6 +1206,21 @@ namespace Bulky.DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ProductStore", b =>
+                {
+                    b.HasOne("Bulky.Models.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Bulky.Models.Models.Store", null)
+                        .WithMany()
+                        .HasForeignKey("StoresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Bulky.Models.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -1230,13 +1229,6 @@ namespace Bulky.DataAccess.Migrations
             modelBuilder.Entity("Bulky.Models.Models.Product", b =>
                 {
                     b.Navigation("ProductImages");
-
-                    b.Navigation("ProductStores");
-                });
-
-            modelBuilder.Entity("Bulky.Models.Models.Store", b =>
-                {
-                    b.Navigation("ProductStores");
                 });
 #pragma warning restore 612, 618
         }

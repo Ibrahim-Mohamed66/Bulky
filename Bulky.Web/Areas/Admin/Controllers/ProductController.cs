@@ -23,9 +23,9 @@ public class ProductController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var products = await _unitOfWork.Product.GetAllAsync(orderBy: q => q.OrderBy(p => p.Id),includes: p => p.Category);
+        var products = await _unitOfWork.Product.GetAllAsync(orderBy: q => q.OrderBy(p => p.Id), includes: p => p.Category);
 
-        return View(products);  
+        return View(products);
     }
 
     [HttpGet]
@@ -34,13 +34,23 @@ public class ProductController : Controller
         var productVm = new ProductVM
         {
             Product = new Product(),
+
             CategoryList = (await _unitOfWork.Category.GetAllAsync(filter: c => !c.IsHidden, orderBy: q => q.OrderBy(c => c.Name)))
                 .Select(c => new SelectListItem
                 {
                     Text = c.Name,
                     Value = c.Id.ToString()
-                })
+                }),
+
+            StoreList = (await _unitOfWork.Store.GetAllAsync(orderBy: q => q.OrderBy(s => s.Name))).Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            })
+
+
         };
+
         if (id == null || id == 0)
         {
             // Create
@@ -49,12 +59,19 @@ public class ProductController : Controller
         else
         {
             // Edit
-            productVm.Product = await _unitOfWork.Product.GetByIdAsync(id.Value,includes: p => p.ProductImages);
+            productVm.Product = await _unitOfWork.Product.GetByIdAsync(id.Value, includes: p => p.ProductImages);
             if (productVm.Product == null)
             {
                 return NotFound();
 
             }
+
+            var productStores = await _unitOfWork.ProductStore.GetAllAsync( filter: ps => ps.ProductId == id.Value);
+
+            productVm.SelectedStoreIds = productStores
+                .Select(ps => ps.StoreId)
+                .ToList();
+
             return View(productVm);
 
         }
@@ -66,7 +83,6 @@ public class ProductController : Controller
     {
         if (ModelState.IsValid)
         {
-           
             try
             {
                 if (productVm.Product.Id == 0)
@@ -106,38 +122,66 @@ public class ProductController : Controller
                         {
                             productVm.Product.ProductImages = new List<ProductImage>();
                         }
-                        productVm.Product.ProductImages = productVm.Product.ProductImages.Append(productImage);
+
+                        if (productVm.Product.ProductImages == null)
+                        {
+                            productVm.Product.ProductImages = new List<ProductImage>();
+                        }
+                        productVm.Product.ProductImages.Add(productImage);
                         await _unitOfWork.ProductImage.AddAsync(productImage);
                     }
-                    await _unitOfWork.SaveChangesAsync();
                 }
 
-
-            }   
+                if (productVm.Product.Id != 0)
+                {
+                    var existingLinks = await _unitOfWork.ProductStore.GetAllAsync(
+                        filter: ps => ps.ProductId == productVm.Product.Id
+                    );
+                    _unitOfWork.ProductStore.RemoveRange(existingLinks);
+                }
+                if (productVm.SelectedStoreIds != null && productVm.SelectedStoreIds.Any())
+                {
+                    foreach (var storeId in productVm.SelectedStoreIds)
+                    {
+                        var productStore = new ProductStore
+                        {
+                            ProductId = productVm.Product.Id,
+                            StoreId = storeId
+                        };
+                        await _unitOfWork.ProductStore.AddAsync(productStore);
+                    }
+                }
+                await _unitOfWork.SaveChangesAsync();
+            }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, $"An error occurred while creating the product: {ex.Message}");
             }
         }
 
-        productVm.CategoryList = (await _unitOfWork.Category.GetAllAsync(filter:c => !c.IsHidden,orderBy: q => q.OrderBy(c => c.Name)))
+        productVm.CategoryList = (await _unitOfWork.Category.GetAllAsync(filter: c => !c.IsHidden, orderBy: q => q.OrderBy(c => c.Name)))
             .Select(c => new SelectListItem
             {
                 Text = c.Name,
                 Value = c.Id.ToString()
             });
+        productVm.StoreList = (await _unitOfWork.Store.GetAllAsync(orderBy: q => q.OrderBy(s => s.Name))).Select(u => new SelectListItem
+        {
+            Text = u.Name,
+            Value = u.Id.ToString()
+        });
         return RedirectToAction(nameof(Index));
     }
-    
 
+    [HttpPost]
     public async Task<IActionResult> DeleteImage(int imageId)
     {
         var image = await _unitOfWork.ProductImage.GetByIdAsync(imageId);
         var productId = image.ProductId;
         if (image != null)
         {
-           if(!string.IsNullOrEmpty(image.ImageUrl))
-           {
+            if (!string.IsNullOrEmpty(image.ImageUrl))
+            {
                 var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
                                     image.ImageUrl.TrimStart('\\'));
                 if (System.IO.File.Exists(oldImagePath))
@@ -145,7 +189,7 @@ public class ProductController : Controller
                     System.IO.File.Delete(oldImagePath);
                 }
 
-           }
+            }
             await _unitOfWork.ProductImage.RemoveAsync(imageId);
             await _unitOfWork.SaveChangesAsync();
             TempData["success"] = "Image Deleted Successfully";
