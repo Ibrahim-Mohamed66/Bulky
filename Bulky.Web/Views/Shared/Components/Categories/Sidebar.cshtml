@@ -1,0 +1,26 @@
+@model IEnumerable<Category>
+
+<li class="nav-item has-submenu">
+    <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#categoriesMenu" aria-expanded="false">
+        <i class="nav-icon fas fa-tags"></i>
+        <span class="nav-text">Categories</span>
+        <i class="nav-arrow fas fa-chevron-down"></i>
+    </a>
+    <ul class="nav-submenu collapse" id="categoriesMenu">
+        <li>
+            <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index" asp-route-filter="all">
+                <i class="nav-icon fas fa-list"></i>
+                <span class="nav-text">All Categories</span>
+            </a>
+        </li>
+        @foreach (var category in Model)
+        {
+            <li>
+                <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Index" asp-route-filter="@category.Name">
+                    <i class="nav-icon fas fa-bookmark"></i>
+                    <span class="nav-text">@category.Name</span>
+                </a>
+            </li>
+        }
+    </ul>
+</li>

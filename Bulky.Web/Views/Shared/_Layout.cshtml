@@ -23,55 +23,144 @@
 <body>
     @if (ViewData["HideNav"] == null || !(bool)ViewData["HideNav"])
     {
-        <header>
-            <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
-                <div class="container-fluid">
-                    <a class="navbar-brand text-uppercase ms-5 d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+        <!-- Mobile Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        
+        <!-- Responsive Sidebar -->
+        <aside class="main-sidebar" id="mainSidebar">
+            <div class="sidebar-header">
+                <div class="d-flex align-items-center justify-content-between">
+                    <a class="navbar-brand text-uppercase d-flex align-items-center text-white" asp-area="" asp-controller="Home" asp-action="Index">
                         <span class="me-2">Bulky</span>
                         <img src="~/images/book.png" alt="Bulky Logo" class="img-fluid" style="height:30px;" />
                     </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+                    <button class="btn btn-link text-white d-lg-none" id="sidebarClose">
+                        <i class="fas fa-times"></i>
                     </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav me-auto d-none d-lg-flex">
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class="nav-icon fas fa-home"></i>
+                            <span class="nav-text">Home</span>
+                        </a>
+                    </li>
+                    @await Component.InvokeAsync("Categories", new { viewName = "Sidebar" })
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="About">
+                            <i class="nav-icon fas fa-info-circle"></i>
+                            <span class="nav-text">About Us</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Contact">
+                            <i class="nav-icon fas fa-envelope"></i>
+                            <span class="nav-text">Contact Us</span>
+                        </a>
+                    </li>
+                    @if (User.IsInRole(StaticData.Role_Employee))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">
+                                <i class="nav-icon fas fa-clipboard-list"></i>
+                                <span class="nav-text">Manage Company Orders</span>
+                            </a>
+                        </li>
+                    }
+                    @if (User.IsInRole(StaticData.Role_Admin))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    @if (HttpContextAccessor.HttpContext.Session.GetInt32(StaticData.SessionCart) != null)
+                    {
+                        <a class="cart-link d-flex align-items-center text-white" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                            @await Component.InvokeAsync("Cart")
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="cart-link d-flex align-items-center text-white" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                            @await Component.InvokeAsync("Cart")
+                        </a>
+                    }
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </aside>
+
+        <header>
+            <nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+                <div class="container-fluid">
+                    <!-- Mobile Sidebar Toggle -->
+                    <button class="btn btn-outline-light me-3 d-lg-none" id="sidebarToggle" type="button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <a class="navbar-brand text-uppercase d-flex align-items-center d-lg-none" asp-area="" asp-controller="Home" asp-action="Index">
+                        <span class="me-2">Bulky</span>
+                        <img src="~/images/book.png" alt="Bulky Logo" class="img-fluid" style="height:30px;" />
+                    </a>
+                    
+                    <!-- Desktop Navigation (hidden on mobile) -->
+                    <div class="d-none d-lg-flex w-100 justify-content-between align-items-center">
+                        <a class="navbar-brand text-uppercase ms-5 d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                            <span class="me-2">Bulky</span>
+                            <img src="~/images/book.png" alt="Bulky Logo" class="img-fluid" style="height:30px;" />
+                        </a>
+                        
+                        <ul class="navbar-nav me-auto d-flex flex-row">
                             <li class="nav-item">
-                                <a class="nav-link p-2 p-lg-3 " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link p-2 p-lg-3" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            @await Component.InvokeAsync("Categories")
+                            <li class="nav-item">
+                                <a class="nav-link p-2 p-lg-3" asp-area="Customer" asp-controller="Home" asp-action="About">About Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link p-2 p-lg-3" asp-area="Customer" asp-controller="Home" asp-action="Contact">Contact Us</a>
                             </li>
                             @if (User.IsInRole(StaticData.Role_Employee))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link p-2 p-lg-3 " asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Company Orders</a>
+                                    <a class="nav-link p-2 p-lg-3" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Company Orders</a>
                                 </li>
                             }
                             @if (User.IsInRole(StaticData.Role_Admin))
                             {
-
                                 <li class="nav-item">
-                                    <a class="nav-link p-2 p-lg-3 " asp-area="Admin" asp-controller="Product" asp-action="Index">Dashboard</a>
+                                    <a class="nav-link p-2 p-lg-3" asp-area="Admin" asp-controller="Product" asp-action="Index">Dashboard</a>
                                 </li>
                             }
                         </ul>
-                        <ul class="navbar-nav ms-auto">
+                        
+                        <div class="d-flex align-items-center">
                             @if (HttpContextAccessor.HttpContext.Session.GetInt32(StaticData.SessionCart) != null)
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                        @await Component.InvokeAsync("Cart")
-                                    </a>
-                                </li>
+                                <a class="nav-link d-flex align-items-center me-3" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                    @await Component.InvokeAsync("Cart")
+                                </a>
                             }
                             else
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center" asp-area="Customer" asp-controller="Cart" asp-action="Index">
-                                        @await Component.InvokeAsync("Cart")
-                                    </a>
-                                </li>
+                                <a class="nav-link d-flex align-items-center me-3" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                    @await Component.InvokeAsync("Cart")
+                                </a>
                             }
-                        </ul>
-                        <partial name="_LoginPartial" />
+                            <partial name="_LoginPartial" />
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -99,6 +188,65 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Main Sidebar Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarClose = document.getElementById('sidebarClose');
+            const sidebar = document.getElementById('mainSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            function openSidebar() {
+                if (sidebar) sidebar.classList.add('sidebar-open');
+                if (overlay) overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeSidebar() {
+                if (sidebar) sidebar.classList.remove('sidebar-open');
+                if (overlay) overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Toggle sidebar
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', openSidebar);
+            }
+            
+            // Close sidebar
+            if (sidebarClose) {
+                sidebarClose.addEventListener('click', closeSidebar);
+            }
+            
+            // Close sidebar when clicking overlay
+            if (overlay) {
+                overlay.addEventListener('click', closeSidebar);
+            }
+            
+            // Handle window resize
+            function handleResize() {
+                if (window.innerWidth >= 992) { // lg breakpoint
+                    closeSidebar();
+                }
+            }
+            
+            window.addEventListener('resize', handleResize);
+            
+            // Close sidebar when clicking on a link (mobile)
+            const sidebarLinks = sidebar?.querySelectorAll('.nav-link');
+            if (sidebarLinks) {
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth < 992) {
+                            closeSidebar();
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

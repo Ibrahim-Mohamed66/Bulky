@@ -1,0 +1,136 @@
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<section class="hero-section">
+    <div class="hero-background">
+        <img src="@Model.Banner.ImageUrl" alt="About Us Banner" />
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-75">
+                <div class="col-lg-8 text-center">
+                    <div class="hero-content">
+                        <h1 class="display-4 fw-bold mb-4">About Us</h1>
+                        <p class="lead mb-4">Discover our story, mission, and the passionate team behind our success.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 border-0 shadow">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-primary mb-3">Our Story</h3>
+                    <p class="card-text">
+                        Founded with a passion for literature and learning, Bulky has been serving book lovers for years. 
+                        We believe that books have the power to transform lives, spark imagination, and connect people across cultures.
+                    </p>
+                    <p class="card-text">
+                        What started as a small bookstore has grown into a comprehensive online platform, offering thousands of titles 
+                        across various genres and categories. From bestselling novels to academic textbooks, we've got something for every reader.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100 border-0 shadow">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-primary mb-3">Our Mission</h3>
+                    <p class="card-text">
+                        At Bulky, our mission is to make quality books accessible to everyone. We strive to:
+                    </p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Provide an extensive collection of books at competitive prices</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Deliver exceptional customer service and support</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Foster a love for reading in communities worldwide</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Support authors and publishers in reaching their audience</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card border-0 shadow">
+                <div class="card-body p-5 text-center">
+                    <h3 class="card-title text-primary mb-4">Why Choose Bulky?</h3>
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="feature-item">
+                                <i class="bi bi-truck display-4 text-primary mb-3"></i>
+                                <h5>Fast Delivery</h5>
+                                <p class="text-muted">Quick and reliable shipping to get your books to you as soon as possible.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="feature-item">
+                                <i class="bi bi-shield-check display-4 text-primary mb-3"></i>
+                                <h5>Quality Assurance</h5>
+                                <p class="text-muted">We ensure all our books are in excellent condition before shipping.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="feature-item">
+                                <i class="bi bi-headset display-4 text-primary mb-3"></i>
+                                <h5>24/7 Support</h5>
+                                <p class="text-muted">Our customer support team is always ready to help you with any questions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12 text-center">
+            <div class="card border-0 shadow bg-light">
+                <div class="card-body p-5">
+                    <h3 class="card-title text-primary mb-4">Join Our Community</h3>
+                    <p class="lead mb-4">
+                        Become part of the Bulky family and discover your next favorite book today!
+                    </p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg me-3">
+                                <i class="bi bi-book me-2"></i>Browse Books
+                            </a>
+                            @if(!User.Identity.IsAuthenticated)
+                            {
+                                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline-primary btn-lg">
+                                    <i class="bi bi-person-plus me-2"></i>Join Us
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .feature-item {
+        padding: 2rem 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .feature-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .feature-item i {
+        transition: color 0.3s ease;
+    }
+
+    .feature-item:hover i {
+        color: #425F4B !important;
+    }
+</style>
